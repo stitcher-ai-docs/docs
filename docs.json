@@ -31,7 +31,26 @@
           "icon": "newspaper"
         }
       ]
-    }
+    },
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart",
+          "concepts"
+        ]
+      },
+      {
+        "group": "Setup & onboarding",
+        "icon": "rocket",
+        "pages": [
+          "setup/create-account",
+          "setup/workspace",
+          "setup/invite-team"
+        ]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
