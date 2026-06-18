@@ -31,7 +31,38 @@
           "icon": "newspaper"
         }
       ]
-    }
+    },
+    "groups": [
+      {
+        "group": "General",
+        "pages": [
+          "index",
+          "general/glossary"
+        ]
+      },
+      {
+        "group": "Manage StitcherAI",
+        "icon": "sliders",
+        "pages": [
+          "manage/connections",
+          "manage/pipelines",
+          "manage/running-pipelines",
+          "manage/scheduling",
+          "manage/user-access"
+        ]
+      },
+      {
+        "group": "Building your cost model",
+        "icon": "hammer",
+        "pages": [
+          "building/access-your-repository",
+          "building/connect",
+          "building/model",
+          "building/build",
+          "building/engage"
+        ]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

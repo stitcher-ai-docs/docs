@@ -1,0 +1,105 @@
+---
+title: "Glossary"
+description: "Definitions for the core terms and concepts you'll meet across StitcherAI."
+icon: "book-a"
+---
+
+Short definitions for the terms used throughout these docs. Each term is defined once here. Other pages link their first mention back to this page rather than restating it.
+
+## Platform and structure
+
+<ResponseField name="Environment">
+  The top-level workspace that holds your pipelines and data connections.
+</ResponseField>
+
+<ResponseField name="Pipeline">
+  A single cost model, backed by a GitHub repository.
+</ResponseField>
+
+<ResponseField name="Repository">
+  The GitHub repository behind a pipeline, where the cost model configuration lives.
+</ResponseField>
+
+<ResponseField name="Data Connection">
+  A configured link to a data source or a destination.
+</ResponseField>
+
+<ResponseField name="Authoring environment">
+  Where you build the cost model: the AI chat, the visual panel, or YAML, opened in Visual Studio Code.
+</ResponseField>
+
+<ResponseField name="Workflow">
+  A scheduled or triggered execution of a pipeline.
+</ResponseField>
+
+<ResponseField name="Run">
+  A single execution of a pipeline.
+</ResponseField>
+
+## The four stages
+
+<ResponseField name="Stage">
+  One of the four phases of a cost model: Connect, Model, Build, and Engage.
+</ResponseField>
+
+<ResponseField name="Connect">
+  The stage that ingests raw cost and business data into the pipeline.
+</ResponseField>
+
+<ResponseField name="Model">
+  The stage that shapes the data, through Prepare, Normalize, Enrich, and Allocate.
+</ResponseField>
+
+<ResponseField name="Build">
+  The stage that produces outputs, through Generate and Govern.
+</ResponseField>
+
+<ResponseField name="Engage">
+  The stage that delivers outputs to where stakeholders consume them.
+</ResponseField>
+
+## Modeling concepts
+
+<ResponseField name="FOCUS">
+  The open FinOps cost and usage specification your data is normalized to.
+</ResponseField>
+
+<ResponseField name="Normalize">
+  Convert source data into the FOCUS schema.
+</ResponseField>
+
+<ResponseField name="Enrich">
+  Add business context to normalized data.
+</ResponseField>
+
+<ResponseField name="Allocate">
+  Assign shared and untagged costs to owners.
+</ResponseField>
+
+<ResponseField name="Artifact">
+  A generated output of the cost model, such as a chargeback report, a KPI, or a forecast.
+</ResponseField>
+
+<ResponseField name="Control">
+  A rule that governs cost behavior, either proactive or reactive.
+</ResponseField>
+
+## Authoring methods
+
+<ResponseField name="AI authoring">
+  Build the cost model through the AI chat in natural language.
+</ResponseField>
+
+<ResponseField name="Visual authoring">
+  Configure stages through the left panel, with assisted YAML editing.
+</ResponseField>
+
+<ResponseField name="YAML authoring">
+  Edit the pipeline configuration directly in YAML.
+</ResponseField>
+
+## Concepts
+
+<ResponseField name="Finance as Code">
+  Managing the cost model as version-controlled, reviewable configuration.
+</ResponseField>

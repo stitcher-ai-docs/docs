@@ -1,0 +1,51 @@
+---
+title: "Access your repository"
+description: "Open the authoring environment for a pipeline and choose how to build your cost model."
+icon: "code-branch"
+---
+
+Every [pipeline](/general/glossary) is backed by a GitHub [repository](/general/glossary). Your cost model lives in that repository as configuration, which means every change is version-controlled, reviewable, and traceable ([Finance as Code](/general/glossary)).
+
+<Note>
+  This page assumes you already have a pipeline. To create one, see [Managing pipelines](/manage/pipelines).
+</Note>
+
+## Open the authoring environment
+
+<Steps>
+  <Step title="Go to the pipeline section">
+    Open the pipeline you want to work on.
+  </Step>
+  <Step title="Open the configuration">
+    Click the GitHub icon on the pipeline and select **Edit pipeline configuration**.
+  </Step>
+  <Step title="Start building">
+    The [authoring environment](/general/glossary) opens in Visual Studio Code, connected to the pipeline's repository.
+  </Step>
+</Steps>
+
+## Ways to build your cost model
+
+You can build your cost model three ways. Use whichever fits the task, and mix them freely within the same pipeline.
+
+### AI authoring
+
+[AI authoring](/general/glossary) builds your cost model in natural language through the AI chat interface.
+
+Click **Start a Chat**, or open one of the cards available under **Stag**
+
+**es** or **Use Cases**. You can perform every stage and every action through the chat: describe what you want, refine it in conversation, and the authoring environment applies the changes to your configuration.
+
+### Visual authoring
+
+[Visual authoring](/general/glossary) configures each stage of the model from the left panel.
+
+Select **Connect**, **Model**, **Build**, or **Engage** to open that stage. Open any `.yaml` file to build it visually, with autocomplete to suggest valid fields and values as you go.
+
+### YAML authoring
+
+[YAML authoring](/general/glossary) edits the pipeline configuration directly in YAML.
+
+<Note>
+  Direct YAML authoring is documented in its own guide. (Coming soon.)
+</Note>
