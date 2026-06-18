@@ -12,11 +12,12 @@ A [run](/general/glossary) is a single execution of a [pipeline](/general/glossa
 
 ## Run a pipeline
 
-- _Trigger a run manually_
-- _What happens during a run (stages execute in order)_
+- Schedule: The ability to establish a specific time to run a standard pipeline run
+- Standard: Runs the full pipeline ingesting all configured sources for the whole months. It builds every artifact and evaluate every control created writing to every configured destination
+- Debug: Rus a limited scope over a date range you select so you can iterate quickly. _Xxx_
 
-## Review run results
+## Execution rules
 
-- _Run history_
-- _Run status and logs_
-- _Handling failed runs_
+Execution rules adjust how a pipeline runs for specific billing periods. FOr example, skipping extraction, or skipping a provider when it errors, for a chosen month.
+
+A rule applies to the months you select and stays active for a defined window.
