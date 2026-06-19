@@ -16,14 +16,52 @@ StitcherAI is organized as a small set of objects that nest inside each other.
     The top-level workspace. It holds your [pipelines](/general/glossary) and your [data connections](/general/glossary).
   </Step>
   <Step title="Pipeline">
-    A single cost model. Each pipeline is backed by a GitHub [repository](/general/glossary), so the model is stored as configuration you can review, version, and audit. This is what [Finance as Code](/general/glossary) means in practice.
+    A single cost model that lives in an environment. Each pipeline is backed by a GitHub [repository](/general/glossary), so the model is stored as configuration you can review, version, and audit. This is what [Finance as Code](/general/glossary) means in practice.
   </Step>
   <Step title="Cost model">
-    The logic inside a pipeline, expressed across four [stages](/general/glossary). You author it through AI, a visual panel, or YAML.
+    The logic inside a pipeline, expressed across four [stages](/general/glossary).
   </Step>
 </Steps>
 
+You build the cost model in an [authoring environment](/general/glossary) opened from a pipeline, working through its four stages with AI, a visual panel, or YAML. See [Access your repository](/building/access-your-repository) to get started.
+
 ## The four stages
+
+Every cost model moves through the same four stages, in order. Each stage hands its output to the next.
+
+<CardGroup cols={2}>
+  <Card title="Connect" icon="plug" href="/building/connect">
+    Ingest raw cost and business data into the pipeline.
+  </Card>
+
+  <Card title="Model" icon="right-left" href="/building/model">
+    Shape the data: Prepare, Normalize to [FOCUS](/general/glossary), Enrich, and Allocate.
+  </Card>
+
+  <Card title="Build" icon="screwdriver-wrench" href="/building/build">
+    Produce outputs: Generate [artifacts](/general/glossary) and Govern with [controls](/general/glossary).
+  </Card>
+
+  <Card title="Engage" icon="rocket" href="/building/engage">
+    Deliver outputs to where stakeholders consume them.
+  </Card>
+</CardGroup>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Glossary" icon="book-open" href="/general/glossary">
+    Definitions for every term used across these docs.
+  </Card>
+
+  <Card title="Manage StitcherAI" icon="sliders" href="/manage/connections">
+    Set up connections, run and schedule pipelines, and manage access.
+  </Card>
+
+  <Card title="Create your cost model" icon="hammer" href="/building/access-your-repository">
+    Open the authoring environment and start modeling.
+  </Card>
+</CardGroup>
 
 Every cost model moves through the same four stages, in order. Each stage hands its output to the next.
 
