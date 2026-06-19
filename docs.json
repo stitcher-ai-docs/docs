@@ -61,23 +61,6 @@
           "building/build",
           "building/engage"
         ]
-      },
-      {
-        "group": "Engaging with your data",
-        "pages": []
-      },
-      {
-        "group": "Capabilities",
-        "pages": [
-          {
-            "group": "Cost modeling",
-            "pages": []
-          },
-          "forecasting",
-          "cost-governance",
-          "ai-cost-management",
-          "custom-cost-data"
-        ]
       }
     ]
   },
