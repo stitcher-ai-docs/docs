@@ -18,13 +18,26 @@ A connector describes how data is accessed. For example, a dataset stored in a S
 
 Where raw data comes from: cloud billing, AI, SaaS, vendor invoices (PDF/CSV), or internal IT cost datasets, plus business data.
 
-- _How to add a source connection_
-- _Supported source types_
-- _Authentication per source_
+#### How to add a source connection
+
+1. **Select a dataset.** The dataset describes what data will be imported. Choose from the available list, which covers sources like cloud billing, AI provider cost and usage, and SaaS.
+2. **Select the connector.** Choose how the data is accessed (for example, a provider's API, or CSV/Parquet exports staged in a cloud storage).
+3. **Configure.** Fill in the connection details.
+
+If the data you want isn't in the list:
+
+- Choose **Custom cost file dataset** to connect a cost data source that isn't covered by a listed dataset.
+
+If you want to connect a business dataset:
+
+- Choose **Business data file dataset**
 
 ## Destination connections
 
 Where outputs are delivered: data lakes, warehouses, BI tools, ERP, Slack and Jira, or developer platforms.
 
-- _How to add a destination connection_
-- _Supported destination types_
+#### How to add a destination connection
+
+1. **Select a dataset.** The dataset describes what data will be written out, and how. Choose **StitcherAI database export** to deliver through a database mechanism, or **StitcherAI file export** to deliver through a file-based mechanism.
+2. **Select the connector.** Choose how the data is delivered (for example, loaded into cloud storage such as AWS S3, GCP GCS, or Azure Storage). The configuration form on the next step adapts to this choice.
+3. **Configure.** Fill in the connection details.

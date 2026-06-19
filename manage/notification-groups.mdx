@@ -1,0 +1,36 @@
+---
+title: "Notification Groups"
+description: "Define where StitcherAI sends notifications."
+icon: "bell"
+---
+
+A notification group is a named set of targets that StitcherAI notifies, for example when a [pipeline](/general/glossary) runs. You manage notification groups from the **Notification Groups** page.
+
+<Note>
+  Draft. Confirm what triggers a notification and how a group is attached to a pipeline.
+</Note>
+
+## Create a notification group
+
+<Steps>
+  <Step title="Open Notification Groups">
+    Select the **\+** to create a new group.
+  </Step>
+  <Step title="Name the group">
+    Enter a **Name** and **Description**.
+  </Step>
+  <Step title="Add targets">
+    Add one or more targets. For each target, choose a **Type** and fill in its connection parameter:
+
+    - **Email**: the email address to notify.
+    - **OpenOps Webhook**: the webhook URL to call.
+    - **Slack Channel**: the Slack channel to post to.
+  </Step>
+  <Step title="Save">
+    Save the group.
+  </Step>
+</Steps>
+
+## Manage notification groups
+
+Each group in the list shows its name, description, and number of targets. Expand a group to see each target's type and connection parameter. Use the action icons to edit or delete a group.

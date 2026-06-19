@@ -4,22 +4,26 @@ description: "Create and manage the pipelines in your environment."
 icon: "diagram-project"
 ---
 
-A [pipeline](/general/glossary) is a single cost model, backed by a GitHub [repository](/general/glossary). Pipelines live inside an [environment](/general/glossary).
+A [pipeline](/general/glossary) is a single cost model, backed by a GitHub [repository](/general/glossary). Pipelines live inside an [environment](/general/glossary) and are managed from the **Pipelines** page.
 
-<Note>
-  Draft outline. Fill in the procedures.
-</Note>
+### Pipeline actions
 
-## Create a pipeline
+Each pipeline row shows its name, status, repository, and latest run. The action icons let you:
 
-- _Steps to create a pipeline_
-- _What gets provisioned (repository, default configuration)_
+- **Invoke** the pipeline (run it now).
+- **View or edit in GitHub** (opens the repository).
+- **Schedule** the pipeline.
+- **Edit** the pipeline.
+- **Delete** the pipeline.
 
-## View and organize pipelines
+### Pipeline runs
 
-- _The pipeline list_
-- _Pipeline status_
+Expand a pipeline to see its runs across **All**, **Running**, **Succeeded**, **Failed**, and **Cancelled**. Each run shows its status, whether it ran in debug, what scheduled it, start time, and duration. Expand a run to see the months covered, the four [stages](/general/glossary) (Connect, Model, Build, Engage) and their status, inputs, and logs. Select **Open run graph** for a detailed view.
 
-## Edit a pipeline
+### Configuration
 
-To edit the cost model itself, see [Access your repository](/building/access-your-repository).
+The **Configuration** tab visualizes the pipeline configuration and its version history. Each tagged commit marks a period of the model's history, so you can track how the cost model changed over time and who changed it. Click a commit icon to add or remove tags.
+
+### Execution rules
+
+The **Execution rules** tab lists rules that control when the pipeline runs, filtered by **Active**, **Inactive**, and **Expired**. Select **Create rule** to add one. Each rule shows its provider, name, type, status, invoke window, and billing period.

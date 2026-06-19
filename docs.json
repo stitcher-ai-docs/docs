@@ -47,7 +47,7 @@
           "manage/connections",
           "manage/pipelines",
           "manage/running-pipelines",
-          "manage/scheduling",
+          "manage/notification-groups",
           "manage/user-access"
         ]
       },
@@ -60,6 +60,23 @@
           "building/model",
           "building/build",
           "building/engage"
+        ]
+      },
+      {
+        "group": "Engaging with your data",
+        "pages": []
+      },
+      {
+        "group": "Capabilities",
+        "pages": [
+          {
+            "group": "Cost modeling",
+            "pages": []
+          },
+          "forecasting",
+          "cost-governance",
+          "ai-cost-management",
+          "custom-cost-data"
         ]
       }
     ]
