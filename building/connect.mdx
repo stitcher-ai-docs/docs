@@ -12,17 +12,32 @@ icon: "plug"
 
 ## Ingest cost data sources
 
-- _Supported cost sources_
-- _Configure a cost source_
+Cost data is the raw cost and usage that the model is built on: cloud billing, AI provider cost and usage, SaaS, and similar.
+
+### Configure a cost data source
+
+Cost data sources are defined in the Connect stage, in `cost_data.yaml`. Using [visual authoring](/general/glossary), open **Stages → Connect → cost\_data.yaml** from the left panel. The file lists the pipeline's **Cost data sources** and **Business data sources**.
+
+To add one, select **Add item** under **Cost data sources** and fill in the form. Each field has a built-in explanation: select the **info (`i`) icon** to open the help panel, which describes every field.
+
+The source is then added to the **Cost data sources** list.
+
+<Note>
+  A cost data source is configured in the StitcherAI Web UI first. The **Name** you give it here references that source, and that same name is used to define the scope of pipeline operations in the [Model](/building/model), [Build](/building/build), and [Engage](/building/engage) stages.
+</Note>
 
 ## Ingest business data
 
-- _What business data adds to the model_
-- _Configure a business data source_
+Business data adds the business context that turns raw cost into meaningful allocation and reporting: ownership, revenue, budgets, and similar.
 
-## Unstructured sources (PDF/CSV)
+### Configure a business data source
 
-Ingest cost data from vendor invoices and exports that don't arrive as a clean feed.
+Business data sources are defined in the Connect stage, in `business_data.yaml`. Using [visual authoring](/general/glossary), open **Stages → Connect → business\_data.yaml** from the left panel. The file lists the pipeline's **Cost data sources** and **Business data sources**.
 
-- _Upload a PDF or CSV_
-- _How unstructured sources are parsed_
+To add one, select **Add item** under **Business data sources** and fill in the form. Each field has a built-in explanation: select the **info (`i`) icon** to open the help panel, which describes every field (Origin, Name, Missing data handling, Path suffix, Columns to override, and Preconditions).
+
+The source is then added to the **Business data sources** list.
+
+<Note>
+  A business data source is configured in the StitcherAI Web UI first. The **Name** you give it here references that source, and that same name is used to define the scope of pipeline operations in the [Model](/building/model), [Build](/building/build), and [Engage](/building/engage) stages.
+</Note>
