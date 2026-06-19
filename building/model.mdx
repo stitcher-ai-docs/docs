@@ -6,31 +6,56 @@ icon: "right-left"
 
 [Model](/general/glossary) is the stage that shapes ingested data into a clean, business-aware dataset. It runs in four steps: Prepare, [Normalize](/general/glossary), [Enrich](/general/glossary), and [Allocate](/general/glossary).
 
-<Note>
-  Draft outline. Fill in the procedures and examples for each step.
-</Note>
-
 ## Prepare
 
-Clean and structure the raw data before normalization.
+Prepare cleans and structures the raw source data before it's normalized to [FOCUS](/general/glossary). You build it as an ordered list of operations, each one a step that transforms the data, such as filtering out rows you don't want.
 
-- _Common preparation steps_
+In the authoring environment, open **Stages → Model → Prepare**. Each operation is its own file, run in order (you can reorder or remove them). Select **Add item** to add an operation, or open an existing one to edit it. Operations are configured through a guided form; select the **info (`i`) icon** on any field for its explanation.
 
 ## Normalize
 
-Convert prepared data into the [FOCUS](/general/glossary) schema so every source is comparable.
+Normalize converts each prepared source into the [FOCUS](/general/glossary) schema, so that data from every provider ends up in the same shape and is directly comparable.
 
-- _How normalization maps source fields to FOCUS_
+In the authoring environment, open **Stages → Model → Normalize**. Each source has its own normalization plan, named for the source it handles (for example `100_kubecost.yaml`, `101_atlassian_pty_ltd.yaml`). Open a plan to edit it, or select **Add item** to add one.
+
+A plan is built in three levels:
+
+1. **Plan**: the normalizer configuration for a single cost source. It has a name and, optionally, a scope to limit which data it applies to.
+2. **FOCUS columns**: the FOCUS fields the plan produces, such as `BillingPeriodStart`, `BilledCost`, and `ProviderName`. Column names must match the FOCUS specification exactly (case-sensitive).
+3. **Steps**: for each FOCUS column, an ordered list of transformation steps that derive its value from the raw source data. Steps run in sequence, each receiving the output of the previous one.
+
+Most columns need a single step, for example renaming a source column to its FOCUS name when the values are already correct. Use multiple steps when one operation isn't enough, such as deriving `BillingPeriodStart` by parsing a date string and then truncating it to the start of the month. As elsewhere in the authoring environment, select the **info (`i`) icon** on any field for its explanation.
 
 ## Enrich
 
-Add business context to normalized data (for example owners, teams, products, environments).
+Enrich adds business context to the normalized data, turning standardized cost rows into rows you can attribute and report on by team, cost center, owner, and more.
 
-- _Configure enrichment_
+In the authoring environment, open **Stages → Model → Enrich**. Each operation is its own file, run in order (you can reorder or remove them). Select **Add item** to add an operation, or open an existing one to edit it. Operations are configured through a guided form; select the **info (`i`) icon** on any field for its explanation.
+
+Enrich supports a range of operation types. A few common ones:
+
+- **Lookup**: join cost data to a business dataset and import columns from it.
+- **Unpack**: split values out of a packed column.
+- **Mapping**: derive a new column from conditions.
+- **Simulate**: generate cost that isn't present yet.
 
 ## Allocate
 
-Assign shared and untagged costs to owners.
+Allocate distributes cost to the teams, business units, and owners responsible for it, including shared and untagged cost that doesn't map cleanly to one owner.
 
-- _Allocation methods_
-- _Configure an allocation_
+Allocation rules are organized into three levels, each a folder of rules:
+
+- **Billing Account level**: allocate within a billing account.
+- **Provider level**: allocate within a single provider.
+- **Cross Provider level**: allocate across providers.
+
+In the authoring environment, open **Stages → Model → Allocate** and choose a level. Each rule is its own file; select **Add item** to add one, or open an existing rule to edit it.
+
+A rule is configured across a set of tabs: general configuration (name, version, granularity), the scope it applies to, what cost to allocate, how to distribute that cost, optional business context to add to the allocated rows, and negation handling. The heart of the rule is its distribution **strategy**:
+
+- **Fixed**: distribute by explicit ratios you define in a table.
+- **N-way**: distribute a shared cost across multiple recipients by a driver such as usage, headcount, or revenue, rather than assigning it to a single owner.
+- **Proportionate**: distribute in proportion to a metric, such as `BilledCost`.
+- **Replace**: substitute the source cost with a replacement dataset.
+
+As elsewhere in the authoring environment, select the **info (`i`) icon** on any field for its explanation.
