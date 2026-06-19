@@ -12,9 +12,17 @@ Each pipeline row shows its name, status, repository, and latest run. The action
 
 - **Invoke** the pipeline (run it now).
 - **View or edit in GitHub** (opens the repository).
-- **Schedule** the pipeline.
+- **Schedule** the pipeline (see [Run types](#run-types)).
 - **Edit** the pipeline.
 - **Delete** the pipeline.
+
+### Run types
+
+A [run](/general/glossary) is a single execution of a pipeline. There are three ways to run one:
+
+- **Standard**: runs the full pipeline, ingesting all configured sources for the whole month. It builds every artifact, evaluates every control, and writes to every configured destination.
+- **Debug**: runs a limited scope over a date range you select, so you can iterate quickly.
+- **Schedule**: set a specific time for a standard run to happen automatically.
 
 ### Pipeline runs
 
@@ -26,4 +34,6 @@ The **Configuration** tab visualizes the pipeline configuration and its version 
 
 ### Execution rules
 
-The **Execution rules** tab lists rules that control when the pipeline runs, filtered by **Active**, **Inactive**, and **Expired**. Select **Create rule** to add one. Each rule shows its provider, name, type, status, invoke window, and billing period.
+Execution rules adjust how a pipeline runs for specific billing periods, for example skipping extraction, or skipping a provider when it errors, for a chosen month. A rule applies to the months you select and stays active for a defined window.
+
+The **Execution rules** tab lists these rules, filtered by **Active**, **Inactive**, and **Expired**. Select **Create rule** to add one. Each rule shows its provider, name, type, status, invoke window, and billing period.

@@ -46,7 +46,6 @@
         "pages": [
           "manage/connections",
           "manage/pipelines",
-          "manage/running-pipelines",
           "manage/notification-groups",
           "manage/user-access"
         ]
@@ -99,5 +98,12 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/manage/running-pipelines",
+      "destination": "/manage/pipelines",
+      "permanent": true
+    }
+  ]
 }
