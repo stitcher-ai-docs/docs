@@ -12,21 +12,23 @@ Each pipeline row shows its name, status, repository, and latest run. The action
 
 - **Invoke** the pipeline (run it now).
 - **View or edit in GitHub** (opens the repository).
-- **Schedule** the pipeline (see [Run types](#run-types)).
+- **Schedule** the pipeline (see [Running a pipeline](#running-a-pipeline)).
 - **Edit** the pipeline.
 - **Delete** the pipeline.
 
-### Run types
+### Running a pipeline
 
-A [run](/general/glossary) is a single execution of a pipeline. There are three ways to run one:
+There are three ways to run a pipeline:
 
 - **Standard**: runs the full pipeline, ingesting all configured sources for the whole month. It builds every artifact, evaluates every control, and writes to every configured destination.
 - **Debug**: runs a limited scope over a date range you select, so you can iterate quickly.
 - **Schedule**: set a specific time for a standard run to happen automatically.
 
-### Pipeline runs
+### Reviewing runs
 
-Expand a pipeline to see its runs across **All**, **Running**, **Succeeded**, **Failed**, and **Cancelled**. Each run shows its status, whether it ran in debug, what scheduled it, start time, and duration. Expand a run to see the months covered, the four [stages](/general/glossary) (Connect, Model, Build, Engage) and their status, inputs, and logs. Select **Open run graph** for a detailed view.
+A [run](/general/glossary) is a single execution of a pipeline. Expand a pipeline to see its runs, filtered by **All**, **Running**, **Succeeded**, **Failed**, and **Cancelled**. Each run shows its status, whether it ran in debug, what scheduled it, start time, and duration.
+
+Expand a run to see the months covered, the four [stages](/general/glossary) (Connect, Model, Build, Engage) and their status, inputs, and logs. Select **Open run graph** for a detailed view.
 
 ### Configuration
 
