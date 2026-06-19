@@ -60,8 +60,20 @@ Short definitions for the terms used throughout these docs. Each term is defined
 
 ## Modeling concepts
 
+<ResponseField name="Cost data">
+  The raw cost and usage data the model is built on, such as cloud billing, AI provider cost and usage, and SaaS.
+</ResponseField>
+
+<ResponseField name="Business data">
+  Data that adds business context to cost, such as ownership, teams, revenue, and budgets.
+</ResponseField>
+
 <ResponseField name="FOCUS">
   The open FinOps Cost and Usage Specification your data is normalized to.
+</ResponseField>
+
+<ResponseField name="Prepare">
+  Clean and structure raw source data before it is normalized to FOCUS.
 </ResponseField>
 
 <ResponseField name="Normalize">
@@ -78,6 +90,10 @@ Short definitions for the terms used throughout these docs. Each term is defined
 
 <ResponseField name="Artifact">
   A generated output of the cost model, such as a chargeback report, a KPI, or a forecast.
+</ResponseField>
+
+<ResponseField name="Artifact type">
+  The kind of artifact produced, such as a primary dataset, derived dataset, time series indicator, control, or alert.
 </ResponseField>
 
 <ResponseField name="Control">

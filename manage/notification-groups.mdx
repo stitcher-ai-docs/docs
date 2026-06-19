@@ -4,10 +4,10 @@ description: "Define where StitcherAI sends notifications."
 icon: "bell"
 ---
 
-A notification group is a named set of targets that StitcherAI notifies, for example when a [pipeline](/general/glossary) runs. You manage notification groups from the **Notification Groups** page.
+A notification group is a named set of targets that StitcherAI notifies when an artifact is exported. You manage notification groups from the **Notification Groups** page, then reference them from the [Engage](/building/engage) stage to decide when they fire.
 
 <Note>
-  Draft. Confirm what triggers a notification and how a group is attached to a pipeline.
+  A notification group defines _who_ is notified, not _when_. The trigger is configured in the [Engage](/building/engage) stage: when you add an integrate operation, enable notification, choose the notification groups to alert, and set how the file is delivered (as a link or an attachment).
 </Note>
 
 ## Create a notification group
