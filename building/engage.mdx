@@ -4,12 +4,14 @@ description: "Deliver your outputs to where stakeholders consume them."
 icon: "rocket"
 ---
 
-[Engage](/general/glossary) is the final stage. It delivers the [artifacts](/general/glossary) produced in Build to where stakeholders consume them.
+[Engage](/general/glossary) is the final stage. It delivers the [artifacts](/general/glossary) produced in Build to where stakeholders consume them, such as a data warehouse, a data lake, or a notification channel.
 
-<Note>
-  Draft outline. Fill in the procedures and examples.
-</Note>
+In the authoring environment, open **Stages → Engage**. Each destination is its own file (for example `bq_export.yaml`, `s3_export_artifact.yaml`), holding one or more integrate operations. Open a destination and select **Add item** to add an operation, or open an existing one to edit it.
 
-## Artifact type
+Each operation:
 
-_Describe how each artifact type is delivered and where it can be sent._
+- Selects the artifact to deliver by **artifact type**, such as a primary dataset, time series indicator, derived dataset, control, or alert.
+- Configures **export options** for the destination. These depend on the destination type: data table destinations such as BigQuery options (with a table name override), or cloud storage destinations such as S3 options.
+- Optionally enables a **notification** when the operation runs.
+
+A single destination can hold several operations, for example exporting a dataset, a control, and a few alerts to the same target. As elsewhere in the authoring environment, select the **info (`i`) icon** on any field for its explanation.

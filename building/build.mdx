@@ -1,25 +1,30 @@
 ---
 title: "Build"
-description: "Produce outputs from your modeled data through Generate and Govern."
+description: "Produce outputs from your modeled data through Generate, Govern, and Events."
 icon: "screwdriver-wrench"
 ---
 
-[Build](/general/glossary) is the stage that turns modeled data into outputs. It has two parts: Generate produces [artifacts](/general/glossary), and Govern applies [controls](/general/glossary).
+[Build](/general/glossary) is the stage that turns modeled data into outputs. It has three parts: Generate produces [artifacts](/general/glossary), Govern applies [controls](/general/glossary), and Events records the changes that inform forecasting.
 
-<Note>
-  Draft outline. Fill in the procedures and examples.
-</Note>
+In the authoring environment, open **Stages → Build**.
 
 ## Generate
 
-Produce artifacts from the modeled data, such as chargeback reports, KPIs, and forecasts.
+Generate produces artifacts from the modeled data. Each artifact is its own file; open **Generate** and select **Add item** to add one, or open an existing artifact to edit it.
 
-- _Available artifact types_
-- _Configure an artifact_
+You start by choosing an **artifact type**, such as a derived dataset or a time series indicator, then configure it through a guided form (source data, time settings, how the value is calculated, and so on).
 
 ## Govern
 
-Apply controls that govern cost behavior, proactive or reactive.
+Govern applies controls to your artifacts. You define control groups, each pointing at a source artifact and holding one or more controls.
 
-- _Proactive vs. reactive controls_
-- _Configure a control_
+A control has a type, a failure-handling mode, and evaluation conditions that decide when it passes or fails.
+
+## Events
+
+Events records known or hypothetical future changes, plus past anomalies, so that forecasts reflect them. They come in two banks:
+
+- **Predictions**: future changes to factor into a forecast, whether known (such as a planned migration that will raise compute cost for a period) or a what-if scenario you want to model.
+- **Anomalies**: past anomalies to mark so they don't distort a future forecast (such as a one-off cost spike over a known date range).
+
+As elsewhere in the authoring environment, select the **info (`i`) icon** on any field for its explanation.
