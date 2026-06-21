@@ -1,0 +1,35 @@
+---
+title: "Walkthrough"
+description: "Build your first cost model end to end: connect sources, add a destination, and run a debug."
+icon: "map"
+---
+
+This walkthrough takes you through a first cost model end to end. It links out to the detailed pages at each step, so you can go deeper where you need to.
+
+<Note>
+  Before you start, set up the authoring environment. See [Set up the authoring environment](/get-started/setup).
+</Note>
+
+<Steps>
+  <Step title="Open your pipeline">
+    From the **Pipelines** page, open the pipeline you want to work on and click **Edit pipeline configuration** to open the [authoring environment](/general/glossary). See [Access your repository](/building/access-your-repository).
+  </Step>
+  <Step title="Connect your data sources">
+    In the **Connect** stage, add a [cost data](/general/glossary) source (for example a cloud billing or AI provider source) and a [business data](/general/glossary) source (for example an ownership mapping). See [Connect](/building/connect).
+  </Step>
+  <Step title="Add a destination">
+    In the **Engage** stage, add a destination and an integrate operation to deliver an [artifact](/general/glossary) to it, such as exporting to a data warehouse or cloud storage. See [Engage](/building/engage).
+  </Step>
+  <Step title="Run a debug">
+    Run the pipeline in **Debug** mode over a short date range so you can check the result quickly before committing to a full run. See [Running a pipeline](/manage/pipelines#running-a-pipeline).
+  </Step>
+  <Step title="Review the run">
+    Open the run to check each stage's status, inputs, and logs, and confirm the output landed at your destination. See [Reviewing runs](/manage/pipelines#reviewing-runs).
+  </Step>
+</Steps>
+
+## Next steps
+
+- Shape your data further in the [Model](/building/model) stage: Prepare, Normalize, Enrich, and Allocate.
+- Produce artifacts and controls in the [Build](/building/build) stage.
+- Look up any term in the [Glossary](/general/glossary).

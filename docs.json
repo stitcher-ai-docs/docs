@@ -34,6 +34,14 @@
     },
     "groups": [
       {
+        "group": "Get started",
+        "icon": "rocket",
+        "pages": [
+          "get-started/setup",
+          "get-started/walkthrough"
+        ]
+      },
+      {
         "group": "General",
         "pages": [
           "index",
