@@ -1,0 +1,70 @@
+---
+title: "Engage"
+description: "Route StitcherAI's curated datasets and artifacts to your destinations, select what to send by group or name, push to custom locations, and notify your teams."
+---
+
+**Engage** is the final phase of the pipeline. It routes StitcherAI's curated datasets and artifacts to one or more **destinations** you control — your warehouse, your storage, and other systems — and notifies your teams when output is ready.
+
+As everywhere in the pipeline, you reference each destination **by name**; its credentials and location are defined in the web app and never stored in the repository. See [Connections & credentials](/connections-and-credentials).
+
+## Destinations
+
+A destination is either object/file storage or a database:
+
+<Tabs>
+  <Tab title="Object / file storage">
+    Write to S3, GCS, or Azure Blob as **Parquet** (the default) or **CSV**. Files are written to **date-partitioned paths**, and the path supports substitutions — the date, and the artifact's name, group, and type, along with the pipeline and environment names — so output organizes itself. Parquet supports compression.
+  </Tab>
+  <Tab title="Database">
+    Write to **BigQuery** or **Snowflake**. You can override the destination table name.
+  </Tab>
+</Tabs>
+
+<Tip>
+  Parquet is columnar and warehouse-native — a good default for analytical destinations. CSV is the most portable choice when something downstream needs plain tabular text.
+</Tip>
+
+## Choose what to send
+
+For each destination, you select which artifacts to deliver — in one of two ways:
+
+<CardGroup cols={2}>
+  <Card title="By artifact group" icon="layer-group">
+    Send **everything in a group** — for example, all of your KPIs or all of your chargeback tables — in one configuration.
+  </Card>
+
+  <Card title="By individual artifact name" icon="tag">
+    Send **one specific artifact** by its name.
+  </Card>
+</CardGroup>
+
+The **group** and **name** are the ones you assigned when you created the artifact in [Generate](/generating-artifacts) — the same selection model used when chaining artifacts and when choosing what to govern.
+
+## Push to a custom location
+
+Engage is also how curated output is pushed to a **custom location** in one of your own systems — for example, handing a **chargeback** artifact to an **ERP**.
+
+<Note>
+  Pushing an artifact out is an **Engage** step, not part of generating it. You build the artifact in Generate, then deliver it here. This is also how the [Reasoning Engine](/reasoning-engine) can submit output — such as a chargeback — into your downstream systems.
+</Note>
+
+## Notifications
+
+When output is ready, notify a channel or email group:
+
+- **As a link** — the default; the notification points to where the output landed.
+- **As an attachment** — for small results, the output is attached directly.
+
+Notification groups (the channels and email recipients) are configured in the web app.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Generating artifacts" icon="cubes" href="/generating-artifacts">
+    Create the artifacts — and assign the groups and names — that Engage delivers.
+  </Card>
+
+  <Card title="Pipeline overview" icon="diagram-project" href="/pipeline-overview">
+    Back to the four phases and the shared building blocks.
+  </Card>
+</CardGroup>

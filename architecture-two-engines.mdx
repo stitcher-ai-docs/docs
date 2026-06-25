@@ -1,0 +1,45 @@
+---
+title: "The two engines"
+description: "The Semantic Engine builds the cost model; the Reasoning Engine acts on it. FOCUS is the shared contract between them."
+---
+
+StitcherAI is made up of two engines that share one cost model.
+
+<Frame caption="The Semantic Engine builds the model; the Reasoning Engine acts on it; FOCUS is the shared contract">
+  ![The Semantic Engine builds the model; the Reasoning Engine acts on it; FOCUS is the shared contract](/images/fig-03-two-engines-seam.png)
+</Frame>
+
+## The Semantic Engine builds the model
+
+The Semantic Engine is the scheduled pipeline that builds and owns your cost model, in four phases:
+
+<Steps>
+  <Step title="Connect">
+    Bring in cost and business data from your sources.
+  </Step>
+  <Step title="Model">
+    Shape and attribute the data: clean it, normalize it to FOCUS, enrich it with business context, and allocate shared cost to the teams that consumed it.
+  </Step>
+  <Step title="Build">
+    Produce artifacts — KPIs, derived datasets, forecasts — and evaluate governance controls.
+  </Step>
+  <Step title="Engage">
+    Deliver the curated datasets and artifacts to your warehouse, storage, BI, and other systems.
+  </Step>
+</Steps>
+
+It runs on a schedule you define (typically daily), is deterministic and reproducible, and writes its output to storage you own. Each phase and its operators are covered in the pipeline documentation.
+
+## The Reasoning Engine acts on the model
+
+The Reasoning Engine is the always-present layer of IT-Finance agents that read the cost model and act on it inside your workflows. It's reachable from the AI tools your teams already use, it reasons over the cost model in finance terms, and it plans and carries out multi-step tasks under human oversight — and each agent's work is checked by a critic before it stands.
+
+## One shared contract
+
+<Info>
+  The two engines meet at the cost model: your data connections together with the FOCUS schema are the shared contract. The Reasoning Engine reasons over **exactly what the Semantic Engine produced** — the same complete, normalized, attributed data — so its answers and actions are grounded in your real model, not an approximation.
+</Info>
+
+## Why two engines
+
+A cost model must be both **built correctly and reproducibly** — a careful, reviewable, scheduled process — and **available at the moment of decision** — interactive and in the workflow. One plane can't do both well; separating them lets each be excellent.

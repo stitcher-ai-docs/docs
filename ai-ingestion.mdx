@@ -1,0 +1,94 @@
+---
+title: "AI-powered ingestion"
+description: "Bring PDF invoices and arbitrary custom cost files into your FOCUS model through chat — StitcherAI proposes a mapping you preview and refine, applies custom-trained models for fuzzy values, and can extract intelligence from unstructured data to enrich or even create a cost dataset."
+---
+
+Not all cost data arrives as a clean export. Vendor invoices — including PDFs — and one-off internal cost files rarely match any standard schema. StitcherAI brings them into the model with AI, so you don't wrangle them by hand, and the result lands in the same [FOCUS](/focus) columns as every other source.
+
+## Bring a file in through chat
+
+Ingestion is managed in a chat conversation in the authoring environment. You bring in the file, StitcherAI proposes how to map it into FOCUS, and you stay in control of the result.
+
+<Steps>
+  <Step title="Bring in a PDF or custom file">
+    A vendor invoice (including a PDF) or an arbitrary internal cost file.
+  </Step>
+  <Step title="StitcherAI proposes a FOCUS mapping">
+    It reads the file and proposes how each part maps into FOCUS columns.
+  </Step>
+  <Step title="Preview the result">
+    See the mapped, FOCUS-shaped output before committing to it.
+  </Step>
+  <Step title="Refine in conversation">
+    Correct or adjust the mapping in chat until it's right.
+  </Step>
+  <Step title="Save it as part of your model">
+    The mapping becomes a source in your cost model and is normalized to FOCUS on every run, like any other.
+  </Step>
+</Steps>
+
+<Frame caption="Bring a PDF invoice into chat; StitcherAI proposes a FOCUS mapping to preview and refine">
+  ![Bring a PDF invoice into chat; StitcherAI proposes a FOCUS mapping to preview and refine](/images/fig-08-chat-ingest-pdf-to-focus.png)
+</Frame>
+
+<Tip>
+  Because the mapping is saved as part of your model, the same invoice format is recognized automatically on future runs — you do this once per format, not once per file.
+</Tip>
+
+## Fuzzy mapping with custom-trained models
+
+Real invoices are full of values that defeat simple rules — the same vendor, region, or service written many different ways. StitcherAI applies **custom-trained mapping models** that collapse those variants into a single canonical value.
+
+<CardGroup cols={3}>
+  <Card title="Vendor names" icon="building">
+    Many spellings and legal-entity variants resolve to one vendor.
+  </Card>
+
+  <Card title="Regions" icon="globe">
+    Provider-specific region labels map to a consistent set.
+  </Card>
+
+  <Card title="Service names" icon="cubes">
+    Inconsistent service descriptions collapse to canonical services.
+  </Card>
+</CardGroup>
+
+<Note>
+  This same fuzzy-mapping capability is available inside the model as a mapping step, so you can normalize messy vendor, region, and service values during a run — not only at ingestion time.
+</Note>
+
+## AI intelligence operators
+
+StitcherAI can go beyond mapping known fields. **AI intelligence operators** extract meaning from unstructured data and use it to add definition to your cost model.
+
+<CardGroup cols={2}>
+  <Card title="Enrich an existing cost dataset" icon="circle-plus">
+    Pull detail out of unstructured documents and attach it to cost you already have.
+  </Card>
+
+  <Card title="Create a cost dataset" icon="file-circle-plus">
+    Where no structured source exists, build a cost dataset from the unstructured data itself.
+  </Card>
+</CardGroup>
+
+Either way, the result is **normalized to FOCUS like any other source**, so it's comparable with the rest of your model and flows through the same downstream stages.
+
+## Built for breadth
+
+<Info>
+  The approach is general, not tied to a fixed provider list. It handles arbitrary vendor invoices — cloud, SaaS, and even non-IT vendors. If a vendor sends you a bill, StitcherAI can bring it into your FOCUS model.
+</Info>
+
+Remember the guarantee from [FOCUS](/focus): StitcherAI populates what the data supports and does not manufacture definition that isn't there. AI-powered ingestion gets _more_ signal out of an unstructured file than a rules-only approach could — but it still maps what's present, rather than inventing what isn't.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="FOCUS" icon="layer-group" href="/focus">
+    The open cost language every ingested source lands in.
+  </Card>
+
+  <Card title="Managing AI spend" icon="robot" href="/managing-ai-spend">
+    How telemetry adds the feature, team, and customer definition cost data alone can't carry.
+  </Card>
+</CardGroup>

@@ -1,0 +1,97 @@
+---
+title: "Datasets, connectors & data connections"
+description: "The building blocks for getting data in and out of StitcherAI — datasets, connectors, and data connections — plus a base connection you craft sources and destinations from, and what StitcherAI can connect to."
+---
+
+Everything StitcherAI does starts with getting data in and ends with sending curated output back out. Both directions are built from the same three concepts, and once you know them you can read every connection in your model.
+
+## Three concepts that combine
+
+<CardGroup cols={3}>
+  <Card title="Dataset" icon="table">
+    _What_ the data is and what it means — an AWS cost & usage export, an OpenAI usage dataset, a vendor invoice, a business-data file.
+  </Card>
+
+  <Card title="Connector" icon="plug">
+    _How_ StitcherAI reaches the data. Three families: file / blob storage, database, and provider API.
+  </Card>
+
+  <Card title="Data connector" icon="arrow-right-arrow-left">
+    A dataset **\+** a connector, set up as a **data source** (data in) or a **destination** (curated output out).
+  </Card>
+</CardGroup>
+
+So a "data connector" is always a dataset paired with a connector, pointed either inward as a source or outward as a destination. That one pattern covers everything you connect.
+
+## Kinds of dataset
+
+<AccordionGroup>
+  <Accordion title="Cost datasets" icon="file-invoice-dollar">
+    Spend itself — cloud, SaaS, AI, vendor invoices, and internal IT. These are normalized to [FOCUS](/focus), the open cost language.
+  </Accordion>
+
+  <Accordion title="Business datasets" icon="sitemap">
+    The context that makes spend meaningful — ownership, teams, cost centers, headcount, revenue, budgets. You use them later to enrich cost, drive allocation, and measure KPIs.
+  </Accordion>
+
+  <Accordion title="Reference / feature data" icon="chart-line">
+    Business series such as headcount or customer count over time. Brought in to improve forecasts beyond historical cost alone.
+  </Accordion>
+</AccordionGroup>
+
+Most data is **structured** — Parquet, CSV, or database tables. StitcherAI also ingests **unstructured** data, principally **PDF** invoices, which it maps into the cost model with AI. See [AI-powered ingestion](/ai-ingestion).
+
+## A base connection you craft from
+
+You don't re-enter connection details every time you add a source. Define a **base data connection** once — the reusable location and credentials for a system — then craft a full data source or destination from it in the authoring environment.
+
+<Steps>
+  <Step title="Define a base data connection">
+    The location and credentials for a system (a storage account, a warehouse, a provider API). Credentials are entered in the web app — see [Connections & credentials](/connections-and-credentials).
+  </Step>
+  <Step title="Craft a source or a destination from it">
+    Choose the dataset and its options. One base connection can underlie many sources and destinations, so you set the credentials and location only once.
+  </Step>
+</Steps>
+
+<Frame caption="From one base data connection, craft a data source or a destination">
+  ![From one base data connection, craft a data source or a destination](/images/fig-06-base-connection-to-source.png)
+</Frame>
+
+<Tip>
+  Credentials never live in your configuration repository — only the connection's _name_ is referenced from the model. The full reasoning, and how validation works, is in [Connections & credentials](/connections-and-credentials).
+</Tip>
+
+## What you can connect
+
+StitcherAI is best understood by **retrieval family** rather than a connector-by-connector list. The table shows the breadth — which providers are covered, an example dataset for each, and how the data is retrieved.
+
+| Provider(s) | Example dataset | How it's retrieved |
+| --- | --- | --- |
+| AWS | Cost & Usage (CUR), FOCUS export | File / blob storage (S3) |
+| Azure | Cost Management / FOCUS export | File / blob storage (Azure Storage) |
+| Google Cloud | Billing export | Database (BigQuery) or blob (GCS) |
+| Snowflake | Organization usage & cost | Database |
+| OpenAI · Anthropic / Claude · Twilio · MongoDB · Elastic · Confluent | Usage & cost | Provider API |
+| Any vendor | Invoice / custom cost (including PDF) | File / blob storage |
+| Internal teams | Business data (ownership, headcount, budgets) | File / blob storage, database, or in-repo |
+
+<Note>
+  New providers are added without changing the model — a source is always a dataset plus a connector in one of the three families above. For arbitrary vendors (cloud, SaaS, or non-IT) and for PDFs, see [AI-powered ingestion](/ai-ingestion).
+</Note>
+
+## Next
+
+<CardGroup cols={3}>
+  <Card title="Connections & credentials" icon="key" href="/connections-and-credentials">
+    Define a connection safely and validate it before use.
+  </Card>
+
+  <Card title="FOCUS" icon="layer-group" href="/focus">
+    The open cost language every source is normalized into.
+  </Card>
+
+  <Card title="AI-powered ingestion" icon="wand-magic-sparkles" href="/ai-ingestion">
+    Bring PDFs and custom files into FOCUS through chat.
+  </Card>
+</CardGroup>
