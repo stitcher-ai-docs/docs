@@ -1,0 +1,72 @@
+---
+title: "Access & administration"
+description: "Organizations, environments, and pipelines; single sign-on; environment-scoped access; GitHub access; and where you work with StitcherAI."
+---
+
+This page covers how you get into StitcherAI and what you can touch — tenancy, identity, access, and the surfaces you work in.
+
+## Tenancy
+
+StitcherAI is organized in three levels you work with directly:
+
+<Steps>
+  <Step title="Organization">
+    Your company — the top-level container, tied to your identity provider.
+  </Step>
+  <Step title="Environment">
+    An isolated workspace within the organization (for example, one per business unit). Data and configuration in one environment are **inaccessible from another**, even within the same organization.
+  </Step>
+  <Step title="Pipeline">
+    A cost model. An environment can hold one or more.
+  </Step>
+</Steps>
+
+<Frame caption="Organization → Environment → Pipeline">
+  ![Organization → Environment → Pipeline](/images/fig-04-org-environment-pipeline.png)
+</Frame>
+
+## Identity and access
+
+<CardGroup cols={2}>
+  <Card title="Single sign-on" icon="key">
+    Sign in through your identity provider (OpenID Connect). The same identity is used for the web app and the VS Code editor.
+  </Card>
+
+  <Card title="Environment-scoped roles" icon="user-lock">
+    Role-based access granted per environment, least-privilege by default. The full security model is in [Security, tenancy & AI guardrails](/security).
+  </Card>
+</CardGroup>
+
+<Note>
+  Each pipeline's configuration lives in a **GitHub repository you control.** Repository access, branch-protection rules, and pull-request reviews are managed in GitHub — so your existing engineering access controls govern changes to the cost model.
+</Note>
+
+## Where you interact with StitcherAI
+
+<CardGroup cols={2}>
+  <Card title="Web app" icon="browser" href="https://app.stitcher.ai">
+    Environments, data connections, runs, schedules, tags, and assistant sessions — at app.stitcher.ai.
+  </Card>
+
+  <Card title="VS Code editor" icon="code">
+    Build the model visually and through AI chat. Log in for the full experience.
+  </Card>
+
+  <Card title="Configuration repository" icon="github">
+    Your pipeline's GitHub repo — version control and review.
+  </Card>
+
+  <Card title="AI-platform connection" icon="robot">
+    The Reasoning Engine inside your own AI tools.
+  </Card>
+
+  <Card title="APIs" icon="plug">
+    Programmatic access.
+  </Card>
+</CardGroup>
+
+## Connections and credentials
+
+<Warning>
+  Data-source credentials are entered and managed in the web app — **never** in your configuration repository — and are validated before use. Setting up a specific connection is covered per provider in the data-foundation documentation.
+</Warning>

@@ -1,0 +1,102 @@
+---
+title: "Cost governance"
+description: "Evaluate any generated artifact against policy on every run. Control groups run conditions, controls mark pass or fail, and breaches raise alerts routed to the right owner — before the decision is irreversible."
+---
+
+Governance evaluates the artifacts your model produces and turns a policy breach into a routed alert. A **control group** targets a generated artifact and runs one or more **conditions** against it; the result is a **control** that marks each evaluation pass or fail; and a breach raises an **alert**. It runs on every run, not in a quarterly review — so a breach is caught before the decision it would inform is irreversible.
+
+<Note>
+  **Govern to avoid bill-shock.** Because a control can be built on **forecasted data, not just current data**, a breach can surface before the spend lands — not after it shows up on the bill.
+</Note>
+
+<Note>
+  Governance composes on top of [generated artifacts](/generating-artifacts). You select what to govern by its **artifact group and name** — the same way you select an input when chaining artifacts.
+</Note>
+
+## How governance works
+
+<Steps>
+  <Step title="Build the artifact to govern">
+    Govern evaluates a generated artifact — a KPI, a derived dataset, or the primary dataset. Build it first in [Generate](/generating-artifacts).
+  </Step>
+  <Step title="Create a control group">
+    Point a control group at that artifact by its **artifact group and name**. The group is what you attach conditions to.
+  </Step>
+  <Step title="Add conditions">
+    Add one or more conditions — the policy tests the artifact must satisfy.
+  </Step>
+  <Step title="Evaluate and alert">
+    On every run, the control marks each evaluation pass or fail and raises an **alert** on a breach.
+  </Step>
+</Steps>
+
+## Worked example — a unit-economics KPI against a threshold
+
+Governance is clearest on a unit-economics KPI.
+
+<Steps>
+  <Step title="Build a cost-per-active-user KPI">
+    In [Generate](/generating-artifacts), build a KPI such as **cost per active user** — a unit-economics measure tracked over time.
+  </Step>
+  <Step title="Govern it with a condition">
+    Create a control group targeting that KPI by its artifact group and name, and add a condition.
+  </Step>
+  <Step title="Check it against a threshold">
+    The condition checks the KPI against a **defined threshold** — for example, it must stay below a target, or a ratio must hold such as _database cost must be no more than 12% of total IT spend_.
+  </Step>
+  <Step title="Route the alert to the owner">
+    When the KPI crosses the threshold, the control records a failure and an alert is **routed to the owner**.
+  </Step>
+</Steps>
+
+<Frame caption="A control evaluates a unit-economics KPI against a threshold and raises an alert">
+  ![A control evaluates a unit-economics KPI against a threshold and raises an alert](/images/fig-13-kpi-governance-alert.png)
+</Frame>
+
+<Tip>
+  Generate produces the metric, Govern judges it against policy, and a breach reaches a person before it becomes a surprise on the bill.
+</Tip>
+
+## Control types
+
+Pick the control type by the shape of the question.
+
+| Control type | What it does | Example |
+| --- | --- | --- |
+| **Row-level control** | A pass/fail verdict **per row**. | A row is missing a required tag, so it fails. |
+| **Aggregate-level control** | **One verdict for the whole dataset**. | A total, or a coverage ratio, is checked against a threshold. |
+
+## Conditions and alert routing
+
+Conditions are kept simple — there's no separate policy language to learn.
+
+- A condition is a **column test** (a column compared against a value, including checks for whether a value is present) or a **SQL-style expression**.
+- Every condition (rule) carries one or more **tags**. Those tags drive how a breach's alert is **routed** — to the owning team, a channel, or an email group — so the right people hear about the right breach.
+
+<AccordionGroup>
+  <Accordion title="Stop at first failure, or evaluate all conditions">
+    A control can **stop at the first failed condition** — when one failure is enough to act on — or **evaluate all conditions** in a single pass, when you want the complete picture of every breach at once.
+  </Accordion>
+</AccordionGroup>
+
+## From breach to action
+
+A failed control raises an alert, and the alert becomes a **notification delivered into the workflows your stakeholders already use** — Slack, Jira, and email — so a breach is acted on where work happens, before the decision it concerns is irreversible.
+
+<Info>
+  Alerts are artifacts like any other, so they can also be delivered to a destination in the [Engage](/engage) phase for systems that consume them directly.
+</Info>
+
+<Tip>
+  Alerts can also trigger **[OpenOps](https://openops.com) hooks** to orchestrate the data into a **custom business workflow you define** — set up in the [Engage](/engage) phase.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Generating artifacts" icon="layer-group" href="/generating-artifacts">
+    Build the KPIs and derived datasets that governance evaluates.
+  </Card>
+
+  <Card title="Managing AI spend" icon="robot" href="/managing-ai-spend">
+    Govern AI unit-economics KPIs the same way once telemetry gives them meaning.
+  </Card>
+</CardGroup>

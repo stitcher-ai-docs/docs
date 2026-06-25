@@ -1,0 +1,85 @@
+---
+title: "Security, tenancy & AI guardrails"
+description: "How StitcherAI isolates tenants, where the AI's data boundaries sit, that agents run under your own credentials and audit, and the platform's baseline security posture."
+---
+
+This page sets out StitcherAI's trust boundaries: how environments are isolated, where the AI's access to data ends, whose credentials the AI acts under, and what baseline protections the platform applies.
+
+## Tenancy & isolation
+
+<Steps>
+  <Step title="Organization">
+    Your company — the top-level container, tied to your identity provider.
+  </Step>
+  <Step title="Environment — the isolation boundary">
+    An isolated workspace within the organization (for example, one per business unit). Data and configuration in one environment are **inaccessible from another, even within the same organization.**
+  </Step>
+</Steps>
+
+<Frame caption="Organization → Environment → Pipeline — the environment is the isolation boundary">
+  ![Organization → Environment → Pipeline — the environment is the isolation boundary](/images/fig-04-org-environment-pipeline.png)
+</Frame>
+
+<Note>
+  Isolation is the **default**, not a setting you turn on. Credentials for [data connections](/connections-and-credentials) are **environment-scoped** — they belong to the environment that uses them and don't span the organization. Identity and environment-scoped roles are covered in [Access & administration](/access-and-administration).
+</Note>
+
+## AI trust boundaries
+
+By default, the AI capabilities your teams use reason over **only your own data**, within your environment. Some capabilities can draw on **anonymized, aggregated** signals across tenants — and those are **opt-in only, never on by default.** You choose the level:
+
+| Level | What the AI can use |
+| --- | --- |
+| **Total opt-out** | No aggregate-scoped capabilities at all. |
+| **Tenant-only** | Capabilities use only your own data. |
+| **All capabilities** | Aggregate-scoped (anonymized, aggregated) capabilities are enabled. |
+
+<Info>
+  "Aggregate-scoped" means anonymized and aggregated — and it is always a deliberate choice you make. Opting out is available at any time.
+</Info>
+
+## Your AI platforms, your control
+
+When the [Reasoning Engine](/reasoning-engine)'s agents reach the AI tools and systems your teams already use, they run **under your credentials and your policies.**
+
+<Warning>
+  StitcherAI **never bypasses your authentication, authorization, or audit.** Because an agent acts with _your_ identity, every access it makes is subject to the same permissions and recorded in the same audit trail as any other access in your organization — nothing is special-cased for StitcherAI.
+</Warning>
+
+The practical consequence: the access controls you already run — environment-scoped roles, and the GitHub repository access that governs your configuration (see [Access & administration](/access-and-administration)) — keep applying to anything the AI does on your behalf.
+
+## Platform security
+
+<CardGroup cols={2}>
+  <Card title="Encryption" icon="lock">
+    In transit and at rest.
+  </Card>
+
+  <Card title="Role-based access" icon="user-lock">
+    Least privilege by default, scoped to environments.
+  </Card>
+
+  <Card title="Access logging" icon="list-check">
+    Access is logged.
+  </Card>
+
+  <Card title="AI models, contractually fenced" icon="robot">
+    Run under enterprise agreements that **prohibit training on your data**, with input and output safety filtering.
+  </Card>
+</CardGroup>
+
+<Note>
+  StitcherAI maintains a **SOC 2** program. Confirm its current status before relying on it for a specific assurance.
+</Note>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Access & administration" icon="key" href="/access-and-administration">
+    Tenancy, single sign-on, environment-scoped roles, and GitHub access.
+  </Card>
+
+  <Card title="Reasoning engine" icon="robot" href="/reasoning-engine">
+    The agents that act under your credentials inside your AI tools.
+  </Card>
+</CardGroup>

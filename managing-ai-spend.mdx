@@ -1,0 +1,80 @@
+---
+title: "Managing AI spend"
+description: "AI spend runs through the same pipeline as every other cost. StitcherAI enriches it from each provider's APIs — breaking out input, output, and cached tokens and surfacing rates and cost per component — then joins telemetry to add the feature, team, and customer definition that makes AI unit economics real."
+---
+
+AI spend flows through the same pipeline as any other cost — connected, normalized to [FOCUS](/focus), attributed, allocated, and built into [artifacts](/generating-artifacts) like a cloud bill or a SaaS invoice. The **model**, **workspace**, and **API key** already arrive in the data. What's distinctive is reaching _what the spend was for_. StitcherAI closes that gap in two steps.
+
+<Steps>
+  <Step title="Enrich from provider APIs">
+    Add deeper detail to what the data already carries: **break out input, output, and cached tokens**, and surface the **rates** and the **cost per component**.
+  </Step>
+  <Step title="Add definition with telemetry">
+    Join token- and trace-level telemetry from your own applications to resolve spend to **feature, team, and customer** — the basis of AI unit economics.
+  </Step>
+</Steps>
+
+<Frame caption="AI spend: provider-API enrichment, then telemetry for feature/team/customer definition">
+  ![AI spend: provider-API enrichment, then telemetry for feature/team/customer definition](/images/fig-14-ai-spend-enrichment.png)
+</Frame>
+
+## Step 1 — enrich from provider APIs
+
+The **model**, **workspace**, and **API key** are already in the provider's cost-and-usage data. Enrichment adds the deeper detail underneath those figures:
+
+<CardGroup cols={2}>
+  <Card title="Token breakout" icon="layer-group">
+    Separate **input, output, and cached tokens** rather than one combined count.
+  </Card>
+
+  <Card title="Rates" icon="tags">
+    The per-component rate applied to each kind of token.
+  </Card>
+
+  <Card title="Cost per component" icon="file-invoice-dollar">
+    The cost of each component, broken out from the single billed figure.
+  </Card>
+
+  <Card title="Fidelity preserved" icon="scale-balanced">
+    The detail still reconciles to what the provider billed.
+  </Card>
+</CardGroup>
+
+<Note>
+  This is enrichment **to the extent the provider's data supports it** — the same guaranteed-versus-best-effort principle as [FOCUS normalization](/focus). Provider data only carries so much definition.
+</Note>
+
+## Step 2 — add definition with telemetry
+
+The definition that cost-and-usage data can't supply — _which feature, team, or customer drove the spend_ — comes from **telemetry**: token- and trace-level usage emitted by your own AI applications. Joining telemetry to the enriched cost data is what makes AI unit economics real.
+
+With telemetry joined in, you can build artifacts that express AI as a business measure:
+
+| Measure | Build it as |
+| --- | --- |
+| Cost per inference | A KPI in [Generate](/generating-artifacts) |
+| Cost per feature | A cost-per-feature KPI |
+| Cost per tenant | A derived dataset |
+| Margin by feature | A derived dataset joining cost to revenue |
+
+<Tip>
+  Provider data carries the **model, workspace, and API key**, and enrichment adds the **token, rate, and per-component detail** beneath them. Telemetry is how you reach **feature, team, and customer** — and true unit economics and margin.
+</Tip>
+
+Once these measures exist, you can govern them like any other KPI — for example, alerting when cost per tenant or margin by feature crosses a threshold. See [Cost governance](/cost-governance).
+
+## What the data can and can't carry
+
+<Warning>
+  StitcherAI populates what the data supports and is explicit about what it can't manufacture. Provider data carries definition only so far; telemetry carries it further; definition that isn't present in the source is not invented. This is the same discipline applied to [FOCUS columns](/focus) elsewhere in the model.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="FOCUS — the open cost language" icon="table" href="/focus">
+    Guaranteed versus best-effort columns, and why StitcherAI never overstates the data.
+  </Card>
+
+  <Card title="Attribution & allocation" icon="diagram-project" href="/attribution-and-allocation">
+    How enriched AI cost is attributed and allocated to the teams that drove it.
+  </Card>
+</CardGroup>

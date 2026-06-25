@@ -1,0 +1,96 @@
+---
+title: "Model"
+description: "Shape and attribute the data in four sub-stages — Prepare, Normalize, Enrich, Allocate — including the full Enrich operator catalog."
+---
+
+**Model** is where raw, heterogeneous cost data becomes one comparable, attributed table. It runs in four sub-stages:
+
+<Steps>
+  <Step title="Prepare">
+    Clean raw vendor data — on its raw columns, before FOCUS exists.
+  </Step>
+  <Step title="Normalize">
+    Convert each source into the FOCUS schema.
+  </Step>
+  <Step title="Enrich">
+    Attach business context on top of FOCUS columns — where attribution mostly happens.
+  </Step>
+  <Step title="Allocate">
+    Distribute shared cost to the teams that consumed it.
+  </Step>
+</Steps>
+
+<Frame caption="Heterogeneous sources become one FOCUS-normalized, attributed table">
+  ![Heterogeneous sources become one FOCUS-normalized, attributed table](/images/fig-02-normalize-before-after.png)
+</Frame>
+
+## Prepare — clean raw data before normalization
+
+Some vendor data needs fixing before it can be mapped into FOCUS — a malformed value, a field that needs splitting, rows that shouldn't be there. **Prepare** runs on the **raw columns, before FOCUS exists**, and uses the **same operator set as Enrich** (the [catalog below](#enrich-attach-business-context)) — minus the two operators that depend on the FOCUS columns (**Simulate periodic cost** and **AI assisted mapping**), which run only in Enrich. Use it to drop, filter, rename, split, unpack, remap, or compute on raw columns — anything that has to happen before normalization.
+
+## Normalize — map every source into FOCUS
+
+Normalize converts each source's raw data into the FOCUS schema, so cost from any provider ends up in the **same columns** and is directly comparable.
+
+<Tabs>
+  <Tab title="Supported providers">
+    Known cloud and SaaS sources normalize **automatically**, with no configuration — including AWS, Azure, Google Cloud, OCI, IBM, and Databricks. StitcherAI's built-in converters map them into FOCUS for you.
+  </Tab>
+  <Tab title="Custom & unstructured">
+    Custom files and unstructured sources (such as PDF invoices) get an **assisted mapping**: StitcherAI's AI proposes the raw → FOCUS mapping, you preview it in the authoring environment, and you refine it before saving. See [AI-powered ingestion](/ai-ingestion) for how this works.
+  </Tab>
+</Tabs>
+
+<Note>
+  FOCUS has a **guaranteed** core (always populated) and **best-effort** columns (populated to the extent the source supports). StitcherAI does not manufacture definition that isn't in the source data. See [FOCUS](/focus) for the column model.
+</Note>
+
+## Enrich — attach business context
+
+Once data is in FOCUS, **Enrich** adds business meaning on top — and this is where [**attribution**](/attribution-and-allocation) mostly happens: the lookups and mappings that attach a team, product, or owner to each cost row.
+
+### The operator catalog
+
+Each operator below also runs in **Prepare** unless it's marked Enrich-only. All of them use the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages) — scope, conditions, and merge behavior.
+
+| Operator | What it does | When it's useful |
+| --- | --- | --- |
+| **Mapping** | Adds or updates a column from an **ordered set of conditions**, with a default value for rows that match none. | Derive `x_team` or `x_cost_center` from rules. |
+| **Lookup** | Merges columns from a **business dataset** into the cost dataset by matching values in a join column; you can rename imported columns and choose how to handle duplicate matches. | Attribute resources to owners via a mapping table. |
+| **Unpack object value** | Explodes keys from an **object/map field** into new columns — a single named key, a list of keys, or all keys matching a pattern. | Flatten provider tag or label blobs. |
+| **Unpack JSON value** | The same, for a **JSON value stored as text**. | Flatten a JSON metadata field. |
+| **Compute column** | Sets a column to a **static value**, a **column reference**, or an **expression** derived at runtime with SQL-style functions. | Derived metrics, constants, calculated fields. |
+| **Filter rows** | **Keeps or removes** rows that match one or more conditions. | Drop test namespaces or non-billable rows. |
+| **Remove columns** | Drops **non-FOCUS columns**. FOCUS columns are protected and cannot be removed. | Shed sensitive or oversized raw fields. |
+| **Simulate periodic cost**_(Enrich only)_ | Projects **recent or historical cost forward** so in-month spend isn't a surprise. Source the projection from the previous month or a historical average. | End-of-month, quarterly, or late-arriving invoices. |
+| **AI assisted mapping**_(Enrich only)_ | Applies a **custom-trained fuzzy-mapping model** at run time to collapse messy variants into one canonical value, with a minimum-accuracy guard and a fallback for unknowns. | Normalize inconsistent vendor, region, or service names. |
+
+<Info>
+  **Amortize cost** — spreading a charge over time, for example recognizing an annual SaaS contract monthly — is **forthcoming**. It is not available yet.
+</Info>
+
+<Warning>
+  **Unmatched rows are not dropped.** Cost rows that find no matching key in a lookup or mapping are treated as **shared or untagged cost** and handed to **Allocate**, which distributes them to the teams that consumed them.
+</Warning>
+
+## Allocate — distribute shared cost
+
+**Allocate** is the last Model sub-stage. It distributes shared cost — a Kubernetes platform, an API gateway, an enterprise license billed centrally but used by many — to the teams, products, and departments that consumed it, using **double-entry accounting** so the dataset's totals always reconcile to the bill.
+
+Because allocation is StitcherAI's most differentiated capability, it has its own page covering the double-entry guarantee, multi-level chains, and every distribution strategy:
+
+<Card title="Attribution & allocation" icon="scale-balanced" href="/attribution-and-allocation">
+  How cost is assigned to the right owners and shared cost is distributed correctly — double-entry accounting, multi-level chains, and distribution strategies (fixed, n-way, proportionate, and replace).
+</Card>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Build artifacts" icon="cubes" href="/build">
+    Generate KPIs, derived datasets, and forecasts from the modeled cost.
+  </Card>
+
+  <Card title="Connect sources" icon="plug" href="/connect">
+    Back to configuring the data that feeds Model.
+  </Card>
+</CardGroup>

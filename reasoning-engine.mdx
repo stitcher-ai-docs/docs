@@ -1,0 +1,94 @@
+---
+title: "The reasoning engine"
+description: "A network of IT-Finance agents that plan and take multi-step actions against your cost model — coordination, IT finance, planning, and custom-cost onboarding, each paired with a critic — reachable inside your own AI platforms, under your credentials."
+---
+
+The Reasoning Engine is the always-present layer of IT-Finance agents that acts on your cost model inside your workflows. It's **agentic, not a chatbot**: a network of agents that plan and take multi-step actions against your model — with a human in the loop where it matters — rather than returning a single answer.
+
+<Info>
+  The agents reason over **exactly what the Semantic Engine produced** — the same complete, normalized, attributed model (see [the two engines](/architecture-two-engines)). Their plans and actions are grounded in your real numbers, not an approximation.
+</Info>
+
+## The agents
+
+<CardGroup cols={2}>
+  <Card title="Coordination agent" icon="route">
+    Orchestrates the work and routes each request to the right agent, keeping context across a session so a multi-part task holds together.
+  </Card>
+
+  <Card title="IT Finance agent" icon="scale-balanced">
+    Understands IT-finance constructs and their impacts, and reasons about a decision in those terms.
+  </Card>
+
+  <Card title="Planning agent" icon="list-check">
+    Handles financial planning and forecasting, turning a goal into an ordered plan it **executes step by step with your approval**.
+  </Card>
+
+  <Card title="Custom-cost agent" icon="file-import">
+    Onboards arbitrary invoices and datasets into the FOCUS model — see [AI-powered ingestion](/focus).
+  </Card>
+</CardGroup>
+
+<Note>
+  **Each agent is paired with a critic that reviews its work.** The critic checks the agent's reasoning and output before it reaches you, so what you see has already been challenged.
+</Note>
+
+## In your own AI platforms
+
+The engine is reachable from inside the AI tools your teams already use, so cost context shows up **at the point of decision** rather than in a separate portal.
+
+<CardGroup cols={2}>
+  <Card title="Claude" icon="message">
+    Reason against your model in chat and coding workflows.
+  </Card>
+
+  <Card title="OpenAI" icon="message">
+    The same agents, in your OpenAI tooling.
+  </Card>
+
+  <Card title="Cursor" icon="code">
+    Cost and margin context inside the editor.
+  </Card>
+
+  <Card title="Codex" icon="terminal">
+    Grounded IT-Finance context in your agentic coding flow.
+  </Card>
+</CardGroup>
+
+You set StitcherAI as the **IT-Finance expert** in your AI platform, so spend-impacting decisions are reasoned against _your_ model — and the agents act **under your own credentials**. An engineer or analyst doesn't leave their workflow to get grounded cost, feature, and margin context.
+
+<Warning>
+  The agents run under your credentials and policies; StitcherAI does not bypass your authentication, authorization, or audit. The full trust-boundary model is covered in [Security](/security).
+</Warning>
+
+## Orchestrating across your systems
+
+The agents orchestrate multi-step workflows that span your systems — ERPs, ITSM, procurement, observability, and BI. The work is a sequence of actions across those tools, gated by you where it matters, not a single lookup.
+
+<AccordionGroup>
+  <Accordion title="Reconcile invoices">
+    Pull, match, and reconcile invoices against the cost model — surfacing discrepancies rather than asking you to chase them by hand.
+  </Accordion>
+
+  <Accordion title="Run a what-if before committing capacity">
+    Simulate a change and review it — with the agent's plan and its critic's review in view — _before_ you commit the capacity, so the decision is made before the commitment is.
+  </Accordion>
+
+  <Accordion title="Generate and submit a chargeback">
+    Build a chargeback [artifact](/generating-artifacts) and submit it onward to an ERP — generation and delivery driven end to end.
+  </Accordion>
+</AccordionGroup>
+
+<Frame caption="An IT-Finance agent in your AI tool: a plan, live cost context, and a paired critic's review">
+  ![An IT-Finance agent in your AI tool: a plan, live cost context, and a paired critic's review](/images/fig-15-reasoning-engine-in-workflow.png)
+</Frame>
+
+<CardGroup cols={2}>
+  <Card title="The two engines" icon="gears" href="/architecture-two-engines">
+    How the Reasoning Engine and the Semantic Engine share one cost model.
+  </Card>
+
+  <Card title="Security" icon="lock" href="/security">
+    Trust boundaries, credentials, and what the agents may access.
+  </Card>
+</CardGroup>

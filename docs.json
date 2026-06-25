@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "StitcherAI",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2A9FAA",
+    "light": "#6BE0D6",
+    "dark": "#17A6B4"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -18,20 +18,61 @@
         ]
       }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    "groups": [
+      {
+        "group": "Overview",
+        "pages": [
+          "introduction",
+          "use-cases",
+          "what-makes-stitcherai-different",
+          "architecture-two-engines",
+          "access-and-administration"
+        ]
+      },
+      {
+        "group": "The data foundation",
+        "pages": [
+          "data-foundation",
+          "connections-and-credentials",
+          "focus",
+          "ai-ingestion"
+        ]
+      },
+      {
+        "group": "The semantic pipeline",
+        "pages": [
+          "pipeline-overview",
+          "connect",
+          "model",
+          "build",
+          "engage"
+        ]
+      },
+      {
+        "group": "Attribution, artifacts & governance",
+        "pages": [
+          "attribution-and-allocation",
+          "generating-artifacts",
+          "forecasting",
+          "cost-governance"
+        ]
+      },
+      {
+        "group": "AI spend & the reasoning engine",
+        "pages": [
+          "managing-ai-spend",
+          "reasoning-engine"
+        ]
+      },
+      {
+        "group": "Operating StitcherAI",
+        "pages": [
+          "running-and-monitoring",
+          "security",
+          "authoring-and-version-control"
+        ]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -40,15 +81,10 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://app.stitcher.ai",
+        "label": "Open app"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
+    ]
   },
   "contextual": {
     "options": [
@@ -68,5 +104,13 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
-  }
+  },
+  "description": "Documentation for StitcherAI — the system of intelligence for IT Finance.",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/introduction",
+      "permanent": false
+    }
+  ]
 }

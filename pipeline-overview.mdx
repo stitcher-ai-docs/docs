@@ -1,0 +1,82 @@
+---
+title: "The semantic pipeline"
+description: "How a pipeline is composed, the four phases at a glance, and the building blocks — scope, conditions, merge behavior, custom columns — that recur across stages."
+---
+
+The Semantic Engine builds your cost model as a pipeline of four phases — **Connect → Model → Build → Engage**. This page explains how a pipeline is put together and the building blocks shared across stages; each phase then has its own page with the operators in detail.
+
+## The four phases at a glance
+
+<Steps>
+  <Step title="Connect">
+    Bring in cost and business data from your sources. [Read more](/connect).
+  </Step>
+  <Step title="Model">
+    Shape and attribute the data — **Prepare → Normalize → Enrich → Allocate**: clean it, normalize it to FOCUS, enrich it with business context, and allocate shared cost to the teams that consumed it. [Read more](/model).
+  </Step>
+  <Step title="Build">
+    Produce artifacts — KPIs, derived datasets, forecasts — and evaluate governance controls. [Read more](/build).
+  </Step>
+  <Step title="Engage">
+    Deliver the curated datasets and artifacts to your warehouse, storage, BI, and other systems. [Read more](/engage).
+  </Step>
+</Steps>
+
+## How a pipeline is composed
+
+A pipeline is a set of **configurations** — one or more per stage. You author them three ways, interchangeably:
+
+<CardGroup cols={3}>
+  <Card title="Visually" icon="table-cells">
+    Fill in visual forms in the VS Code editor, with field-level help and per-stage validation.
+  </Card>
+
+  <Card title="By AI chat" icon="comments">
+    Describe what you want; AI proposes the configuration and can carry out multi-stage edits.
+  </Card>
+
+  <Card title="Directly" icon="code">
+    Edit the underlying configuration yourself when you'd rather work in text.
+  </Card>
+</CardGroup>
+
+Configurations are kept in a version-controlled repository — see [Authoring & version control](/authoring-and-version-control). Each one refers to its data **sources and destinations by name**; the credentials themselves live in the web app, never in the repository (see [Connections & credentials](/connections-and-credentials)).
+
+<Note>
+  **Order is honored where it matters.** Within a stage, configurations run in a defined order you control. This matters most in **Enrich** — where a lookup may depend on a column an earlier mapping created — and in **Allocate**, where a multi-level chain must run from the top down.
+</Note>
+
+## Building blocks shared across stages
+
+The same handful of concepts recurs across operators, so it's worth learning them once.
+
+| Building block | What it does |
+| --- | --- |
+| **Scope** | Limits which providers or data sources a rule touches — include or exclude. |
+| **Conditions** | Simple column tests (`=`, `!=`, `>`, `<`, `is null`, …) or a SQL expression. |
+| **Merge behavior** | How a new column is written: **add** (new column, fail if it exists), **update-if-empty** (fill only blank values), or **overwrite**. |
+| **Custom columns** | Your own fields, named with an `x_` prefix, available to every later stage. |
+| **Column overrides** | Set or override a column with a constant or an expression as a dataset is read in (used in Allocate and Govern). |
+| **Execution rules** | Operational guards such as **skip extraction** or **skip-on-error**. |
+
+<Info>
+  **One expression and transformation language across stages.** Deriving a value from other columns looks the same everywhere — a **Compute column** or **Mapping** in [Enrich](/model), value mapping in **Normalize**, calculations and aggregations in **Generate**, and conditions in **Govern**. The Build phase adds **aggregation** on top — sum, average, percentiles (p50/p75/p90), median, distinct count, and more — to roll detailed cost up into new artifacts.
+</Info>
+
+<CardGroup cols={2}>
+  <Card title="Connect" icon="plug" href="/connect">
+    Cost and business data sources, and preconditions that gate a run.
+  </Card>
+
+  <Card title="Model" icon="diagram-project" href="/model">
+    Prepare, Normalize, the full Enrich operator catalog, and Allocate.
+  </Card>
+
+  <Card title="Build" icon="cubes" href="/build">
+    Generate artifacts, govern them, and define forecast events.
+  </Card>
+
+  <Card title="Engage" icon="share-nodes" href="/engage">
+    Route datasets and artifacts to destinations and notify your teams.
+  </Card>
+</CardGroup>

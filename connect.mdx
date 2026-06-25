@@ -1,0 +1,86 @@
+---
+title: "Connect"
+description: "Configure cost and business data sources, supply the per-provider inputs a raw export omits, and gate a run with preconditions."
+---
+
+**Connect** is the first phase of the pipeline. You configure the **cost** and **business/reference** data sources to pull from, and — optionally — the **preconditions** that decide whether a run should proceed at all.
+
+You reference each source **by name**. The credentials and location behind that name are defined once in the web app and validated before use; see [Connections & credentials](/connections-and-credentials). For the full catalog of what can be connected — cloud billing, warehouses, SaaS and usage APIs, and file or PDF sources — see the [data foundation](/data-foundation).
+
+## Cost data sources
+
+A cost data source retrieves billing data from object/file storage or a database. Beyond pointing at the source by name, you can:
+
+- **Override columns** — set or replace a column's value as the data is read in.
+- **Remove columns** — drop sensitive or oversized raw fields you don't need downstream.
+- **Supply per-provider inputs the raw export omits** — so accurate FOCUS cost can be computed.
+
+### Per-provider inputs for accurate cost
+
+Some providers' billing exports leave out information StitcherAI needs to compute FOCUS cost columns such as `ListCost`, `BilledCost`, and `EffectiveCost`. You supply it here.
+
+<Tabs>
+  <Tab title="Snowflake">
+    The billing export doesn't include your enterprise discount, so provide a **discount percentage** (and, separately, a **storage discount percentage**). StitcherAI uses it to compute accurate FOCUS cost — specifically `ListCost`.
+  </Tab>
+  <Tab title="MongoDB Atlas">
+    Provide a **discount percentage** and, where applicable, a **prepaid balance**.
+  </Tab>
+  <Tab title="Elastic Cloud">
+    Elastic bills in **ECU**, which must be converted to a monetary value — supply the **ECU rate** (ECU → currency). Provide a **prepaid balance** if you have one.
+  </Tab>
+  <Tab title="Confluent">
+    Provide a **prepaid balance**.
+  </Tab>
+</Tabs>
+
+<Note>
+  **Prepaid balances.** While spend stays **within** a prepaid balance, it is reflected as **`EffectiveCost`** and `BilledCost` is zero. The **overage** beyond the balance becomes **`BilledCost`** — so the model matches how you were actually billed.
+</Note>
+
+## Business and reference data sources
+
+Business data brings the context that makes cost attributable — ownership, teams, cost centers, headcount, revenue, and budgets. Reference series such as customer count or transaction volume can also feed [forecasting](/forecasting). There are two ways to store it:
+
+<Tabs>
+  <Tab title="External storage">
+    Retrieve business datasets from external storage (S3, GCS, Azure Blob) using **date-partitioned paths** (a path that contains the period, optionally with a wildcard). If the current period's file is missing, choose how to handle it: raise an error, or **use the last available period** as a fallback.
+  </Tab>
+  <Tab title="Stored with the configuration">
+    For small, static, non-sensitive data, store the dataset **directly alongside the configuration** in your repository. The path includes the period it applies to.
+  </Tab>
+</Tabs>
+
+## Preconditions — gate a run before it processes bad input
+
+A precondition is a **cheap, deterministic check** — no AI involved — that declares the shape data must have before the pipeline spends money working on it. When a precondition fails, that dataset is **skipped gracefully** instead of corrupting the model.
+
+<AccordionGroup>
+  <Accordion title="Data exists" icon="list-check">
+    A **row-count threshold** on a filtered subset — for example, "this dataset must have more than zero rows after filtering." Choose the comparison and the threshold.
+  </Accordion>
+
+  <Accordion title="Daily coverage" icon="calendar-days">
+    Assert that **every group has data for every day** in the run period. You pick the date column and the columns that define a group — useful for catching a source that silently dropped a day or a region.
+  </Accordion>
+
+  <Accordion title="Aggregate threshold" icon="calculator">
+    A **single numeric result** — computed with a SQL aggregate over the dataset — compared against a threshold. The run period is available as a placeholder so the check can be period-aware.
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Preconditions are the inexpensive safety net **before** the modeling work begins. For checks that run **after** artifacts are built — evaluating the model against policy — see [Cost governance](/cost-governance).
+</Tip>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Model the data" icon="diagram-project" href="/model">
+    Prepare, normalize to FOCUS, enrich, and allocate.
+  </Card>
+
+  <Card title="What can be connected" icon="database" href="/data-foundation">
+    Datasets, connectors, and the full source catalog.
+  </Card>
+</CardGroup>

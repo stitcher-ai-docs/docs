@@ -1,0 +1,129 @@
+---
+title: "Authoring & version control"
+description: "Build the cost model in the VS Code editor with side-by-side AI chat, start from ready-made prompts, and version everything visually — branches and pull requests in VS Code, tags in the web app — no command line required."
+---
+
+You author the cost model the way software is built — branches, review, reproducible versions — but made approachable, so finance stakeholders and engineers work on the same model. This page covers the editor, modeling with AI chat, and versioning through VS Code and the web app.
+
+## The VS Code editor — log in for the rich experience
+
+The editor is a VS Code experience for building the model. The richest capabilities turn on when you sign in.
+
+<Warning>
+  The **AI editor, the schema browser, and autocomplete are available only when you're logged in.** Logging in is what turns the editor from a text view into the full authoring environment. Use the same identity as the web app — see [Access & administration](/access-and-administration).
+</Warning>
+
+Logged in, you build the same model in two interchangeable ways:
+
+<CardGroup cols={2}>
+  <Card title="Visual forms" icon="table-cells">
+    Build each stage through forms with **per-stage validation** and field help. The schema browser shows what data is available.
+  </Card>
+
+  <Card title="The configuration directly" icon="code">
+    Work with the underlying configuration when you'd rather edit it by hand. Autocomplete helps as you type.
+  </Card>
+</CardGroup>
+
+The **AI chat sits side-by-side** with the configuration — you converse and build together. It carries out **multi-stage edits** (for example, a normalization change _plus_ the allocation rule that depends on it) and shows **its plan as an inline checklist**, so you see and approve what it will do before it acts.
+
+<Frame caption="The VS Code editor (logged in): visual form, schema browser, side-by-side AI chat">
+  ![The VS Code editor (logged in): visual form, schema browser, side-by-side AI chat](/images/fig-17-editor-logged-in.png)
+</Frame>
+
+## Cost modeling with AI chat — sample prompts
+
+The editor's start page offers ready-made prompts to get going. A real selection, grouped by goal:
+
+<AccordionGroup>
+  <Accordion title="Bring data in" icon="file-import">
+    - "Ingest a cloud cost dataset into my cost model"
+    - "Connect a new cost or business data source"
+  </Accordion>
+
+  <Accordion title="Forecast & simulate" icon="chart-line">
+    - "Add the ability to forecast a KPI configured in the pipeline"
+    - "Simulate the forecast based on a future event"
+    - "Explain a past anomaly event to improve my forecast"
+  </Accordion>
+
+  <Accordion title="Build artifacts" icon="cubes">
+    - "Build an artifact based on your cost model"
+  </Accordion>
+
+  <Accordion title="Govern & alert" icon="shield-check">
+    - "Alert when database costs exceed 12% of total IT spend"
+    - "Alert when disallowed services and SKUs are used"
+  </Accordion>
+</AccordionGroup>
+
+## Version control — through VS Code and the web app
+
+The model is versioned in Git, but you work with it visually.
+
+<Note>
+  **No command line required.** Branching, check-in, and pull requests all happen in **VS Code's source-control panel**; tags are managed in the **web app**.
+</Note>
+
+### Branch, change, and review — in VS Code
+
+<Steps>
+  <Step title="Create a branch">
+    In VS Code's source-control panel, create a branch to work on your change in isolation.
+  </Step>
+  <Step title="Check changes in and out">
+    Stage and commit ("check in") your edits as you go. Validate the branch with a scoped [debug run](/running-and-monitoring) before sharing it.
+  </Step>
+  <Step title="Open a pull request">
+    Open a pull request for peer review. Your repository's review and branch-protection rules apply — see [Access & administration](/access-and-administration).
+  </Step>
+</Steps>
+
+<Frame caption="VS Code's source-control panel: a branch and staged configuration changes">
+  ![VS Code's source-control panel: a branch and staged configuration changes](/images/fig-18-vscode-prompt-based-modeling.png)
+</Frame>
+
+### Tags — in the web app
+
+A **tag** assigns a configuration version to the **cost period(s) it applies to**, so a historical run reproduces exactly. You manage tags in the web app, not in Git tooling.
+
+<Frame caption="Managing tags in the web app: assigning a configuration version to the cost periods it applies to">
+  ![Managing tags in the web app: assigning a configuration version to the cost periods it applies to](/images/fig-19-web-app-tags.png)
+</Frame>
+
+<Tip>
+  Branching and review give the model software-grade change control; date-based tags make past runs replayable. A [standard run](/running-and-monitoring) uses these tags to pick the right configuration for the period it processes.
+</Tip>
+
+## The web app
+
+The web app at [app.stitcher.ai](https://app.stitcher.ai) is the operational hub: it's where you manage **environments, data connections, runs, schedules, tags, and assistant sessions.**
+
+## Pushing your own data in
+
+Because you own your data, you can push it in from your own side. Customer-side push tools write **any cost dataset to your own storage** — your own keys, your own infrastructure — where a StitcherAI **file connection** then reads it.
+
+<Steps>
+  <Step title="Run a push tool on your side">
+    A customer-side tool (for example, one that syncs an AI platform's usage) runs with **your credentials, in your environment**, and writes files to **your own bucket**.
+  </Step>
+  <Step title="Read it with a file source">
+    A StitcherAI file [data source](/connections-and-credentials) points at that storage and ingests the files like any other source — see [the data foundation](/data-foundation).
+  </Step>
+</Steps>
+
+<Info>
+  Your credentials never leave your side. The push tool runs in your environment; StitcherAI only reads the resulting files from storage you own.
+</Info>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Running & monitoring" icon="play" href="/running-and-monitoring">
+    Validate a branch with a debug run; tags drive standard runs.
+  </Card>
+
+  <Card title="Access & administration" icon="key" href="/access-and-administration">
+    The identity you log in with, and the GitHub repository that holds your configuration.
+  </Card>
+</CardGroup>

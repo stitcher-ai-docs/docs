@@ -1,0 +1,113 @@
+---
+title: "FOCUS — the open cost language"
+description: "StitcherAI normalizes every cost source into FOCUS, the open FinOps cost and usage standard, and outputs Parquet and CSV you own. What FOCUS guarantees, what's best-effort, and the two roads every source takes to get there."
+---
+
+StitcherAI normalizes every cost source — a cloud bill, a SaaS invoice, a Kubernetes export — into one common language: **FOCUS**, the [FinOps Open Cost and Usage Specification](https://focus.finops.org). Because everything speaks FOCUS, cost from any provider is directly comparable, and the output is yours.
+
+## One language, open output
+
+<CardGroup cols={2}>
+  <Card title="A common schema" icon="layer-group">
+    Every source lands in the same FOCUS columns, so a Kubernetes export, a SaaS invoice, and a cloud bill can be compared and combined directly.
+  </Card>
+
+  <Card title="Open formats you own" icon="box-open">
+    Outputs are **Parquet and CSV** — portable and warehouse-native, not a proprietary API. They land in your own storage.
+  </Card>
+</CardGroup>
+
+<Note>
+  FOCUS is an open standard, not a StitcherAI format. StitcherAI's founder co-created it. Building your finance practice on FOCUS means your data stays portable and isn't locked to any one tool.
+</Note>
+
+## Guaranteed vs best-effort columns
+
+StitcherAI is precise about what normalization delivers. Some columns are always populated; others depend on what the source actually contains.
+
+<Tabs>
+  <Tab title="Guaranteed">
+    A core set is populated for **every** normalized source:
+
+    - Billing and charge periods (start and end)
+    - The cost metrics — billed cost and effective cost
+    - Provider and account
+    - Service
+    - Currency
+    - Charge category
+
+    This core is what makes any two sources comparable on day one.
+  </Tab>
+  <Tab title="Best-effort">
+    Richer columns are populated **to the extent the source data supports them**:
+
+    - Resource ids, names, and types
+    - Regions
+    - Tags and labels
+    - Commitment and discount detail
+    - Unit prices and quantities
+    - SKUs
+
+    Where a source carries this detail, you get it; where it doesn't, the column stays empty rather than being guessed.
+  </Tab>
+</Tabs>
+
+<Warning>
+  **StitcherAI does not manufacture definition that isn't present in the source.** If a vendor's data doesn't distinguish regions or carry resource ids, those columns won't be invented. This is what keeps the model trustworthy — it never implies a level of detail the underlying data can't support. Where richer definition is needed for AI spend, [telemetry](/managing-ai-spend) supplies it.
+</Warning>
+
+<Frame caption="FOCUS columns — a guaranteed core, plus best-effort detail to the extent the source supports it">
+  ![FOCUS columns — a guaranteed core, plus best-effort detail to the extent the source supports it](/images/fig-07-focus-guaranteed-vs-best-effort.png)
+</Frame>
+
+## Two roads to FOCUS
+
+Every source reaches FOCUS one of two ways, and both converge on the same columns.
+
+<CardGroup cols={2}>
+  <Card title="Native converters" icon="bolt">
+    Structured cloud exports are mapped into FOCUS automatically, with no configuration.
+  </Card>
+
+  <Card title="AI-powered mapping" icon="wand-magic-sparkles" href="/ai-ingestion">
+    Unstructured and custom data — PDF invoices, arbitrary vendor files — is mapped into FOCUS with AI.
+  </Card>
+</CardGroup>
+
+StitcherAI ships native converters for these providers' structured exports:
+
+<CardGroup cols={3}>
+  <Card title="AWS" icon="aws">
+  </Card>
+
+  <Card title="Azure" icon="microsoft">
+  </Card>
+
+  <Card title="Google Cloud" icon="google">
+  </Card>
+
+  <Card title="OCI" icon="cloud">
+  </Card>
+
+  <Card title="IBM" icon="server">
+  </Card>
+
+  <Card title="Databricks" icon="database">
+  </Card>
+</CardGroup>
+
+<Info>
+  Anything outside this set — a custom file or a vendor invoice, including a PDF — takes the AI-powered road instead. Whichever road a source takes, it ends up in the same FOCUS columns, so downstream everything is treated identically. See [AI-powered ingestion](/ai-ingestion).
+</Info>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="AI-powered ingestion" icon="wand-magic-sparkles" href="/ai-ingestion">
+    Turn PDFs and custom files into FOCUS through chat.
+  </Card>
+
+  <Card title="Datasets, connectors & data connections" icon="plug" href="/data-foundation">
+    Where the sources that get normalized come from.
+  </Card>
+</CardGroup>

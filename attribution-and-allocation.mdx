@@ -1,0 +1,140 @@
+---
+title: "Attribution & allocation"
+description: "Attribution assigns cost — shared components included — so every component has a clear view of its own cost; allocation distributes the shared portions of cost to a set of receivers, balanced by double-entry accounting and traceable across multi-level chains."
+---
+
+Attribution and allocation are two distinct jobs, and StitcherAI keeps them distinct.
+
+<CardGroup cols={2}>
+  <Card title="Attribution" icon="user-tag">
+    Assign cost — _including to shared components_ — so every component, shared ones included, has a clear view of its own cost.
+  </Card>
+
+  <Card title="Allocation" icon="share-nodes">
+    Distribute the _shared portions_ of cost to a set of receivers.
+  </Card>
+</CardGroup>
+
+## Attribution vs allocation
+
+Most **attribution** happens during [Model](/model), as cost data is enriched. A **Lookup** joins an ownership table onto each cost row by a key; a **Mapping** derives an owner from rules on the values already present. After enrichment, most cost carries the owner it belongs to.
+
+What's left is the shared, central, and untagged cost that no single owner can claim — a Kubernetes platform, an API gateway, an enterprise license. That is what **allocation** distributes. Attribution narrows; allocation spreads what remains.
+
+<Note>
+  The hand-off is the point: the rows attribution can't assign to one owner are exactly the rows allocation distributes.
+</Note>
+
+## Double-entry accounting
+
+Allocation is where a cost model is most easily broken — move cost carelessly and totals stop matching the bill. StitcherAI prevents that with **double-entry accounting**.
+
+Every allocation posts two kinds of entry:
+
+<Steps>
+  <Step title="A balancing negation">
+    A negation is posted against the source cost — the central charge is reduced by exactly the amount being moved.
+  </Step>
+  <Step title="Allocation entries to recipients">
+    One or more entries distribute that amount to the teams that consumed the service.
+  </Step>
+  <Step title="They net to zero">
+    The negation and the recipient entries **sum to zero net change**, so the dataset's totals still reconcile to the bill.
+  </Step>
+</Steps>
+
+The bill total is fixed; allocation only redistributes it. **Nothing is invented or lost — cost is only moved.** Because every move nets to zero, the allocated model reconciles to what providers actually charged, and you can trust the redistributed numbers as readily as the raw bill.
+
+<Frame caption="Double-entry allocation: a balancing negation plus recipient allocations net to zero">
+  ![Double-entry allocation: a balancing negation plus recipient allocations net to zero](/images/fig-09-double-entry-allocation.png)
+</Frame>
+
+## Multi-level allocations
+
+Real organizations are layered, and allocations chain to match. A shared-services cost is first **attributed** to the shared service, then **allocated** to its consumers — and those consumers may themselves be second-level shared services, allocated onward in turn.
+
+What keeps a chained allocation trustworthy is that every amount carries **allocation status columns**. They record, at each step:
+
+- whether a row is original cost, a negation, or an allocation;
+- which **rule** and **ratio** moved it;
+- its source-versus-destination status.
+
+So a multi-stage allocation is traceable end to end: you can follow exactly how each dollar flowed from origin to final owner, hop by hop, with no opaque step in between.
+
+## How an allocation rule is expressed
+
+A rule reads like a sentence. You author it in this order:
+
+<Steps>
+  <Step title="Scope">
+    Which providers or accounts the rule applies to.
+  </Step>
+  <Step title="Which cost to allocate">
+    Filters that select the rows, plus the **grouping** that summarizes them.
+  </Step>
+  <Step title="How to distribute it">
+    A distribution strategy (below).
+  </Step>
+  <Step title="The balancing negation">
+    Posted automatically against the source so the move nets to zero.
+  </Step>
+  <Step title="Overrides">
+    Optional adjustments to the resulting rows.
+  </Step>
+</Steps>
+
+### Distribution strategies
+
+| Strategy | What it does | When it's relevant |
+| --- | --- | --- |
+| **Fixed** | Distributes by explicit ratios that sum to 100%. | You already know the split. |
+| **N-way** | Splits equally across the receivers. | Each receiver shares equally. |
+| **Proportionate** | Splits by a driver metric — usage, seats, pod-hours, or revenue. | A usage metric should drive the split. |
+| **Replace** | Swaps coarse cost for finer-grained cost from a platform tool, to avoid double-counting. | A more granular source exists for the same resources. |
+
+<Info>
+  **Where recipients come from:** an inline table you type, the cost data itself (each distinct group becomes a recipient), or a business dataset.
+</Info>
+
+### Scope and levels
+
+A rule can run at one of three levels:
+
+<CardGroup cols={3}>
+  <Card title="Billing account" icon="file-invoice">
+    Within a single billing account.
+  </Card>
+
+  <Card title="Provider" icon="cloud">
+    Across all of one provider's accounts together.
+  </Card>
+
+  <Card title="All providers" icon="globe">
+    The whole cost dataset together.
+  </Card>
+</CardGroup>
+
+## Worked example: \$100, end to end
+
+<Steps>
+  <Step title="Start with the providers">
+    $100 of cost arrives from two providers — **Cloud Corp ($70)\*\* and **SaaS LLC (\$30)**.
+  </Step>
+  <Step title="Attribute the shared service">
+    **Shared service A** is used by everyone and billed across both providers. It draws \*\*$10 from each provider**, so $20 is first attributed to the shared service.
+  </Step>
+  <Step title="Allocate the shared service to the apps">
+    Shared service A's cost is allocated onward to the apps that consumed it — **App 1** and **App 2** — alongside the cost those apps draw directly from the providers.
+  </Step>
+  <Step title="Every dollar lands on an app">
+    When the moves settle, the full $100 is attributed to apps: **App 1 ($60)\*\* and **App 2 (\$40)**. Each step posts its balancing negation and writes its rule and ratio into the **allocation status columns**, so the path is traceable and the totals still reconcile to the original bill.
+  </Step>
+</Steps>
+
+<Frame caption="Worked example: $100 flows through two providers (Cloud Corp $70, SaaS LLC $30) and Shared service A ($10 from each) to App 1 ($60) and App 2 ($40) — every dollar attributed">
+  ![Worked example: 100 flows through two providers (Cloud Corp 70, SaaS LLC 30) and Shared service A (10 from each) to App 1 (60) and App 2 (40) — every dollar attributed](/images/fig-10-allocation-sankey.png)
+</Frame>
+
+<Card title="Next: generating artifacts" icon="layer-group" href="/generating-artifacts">
+  Build KPIs, derived datasets, and chargebacks on top of the allocated model.
+</Card>
