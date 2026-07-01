@@ -52,6 +52,7 @@
         "group": "Attribution, artifacts & governance",
         "pages": [
           "attribution-and-allocation",
+          "allocate-shared-cost",
           "generating-artifacts",
           "forecasting",
           "cost-governance"

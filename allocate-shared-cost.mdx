@@ -1,0 +1,78 @@
+---
+title: "Distribute shared cost with an allocation rule"
+sidebarTitle: "How to allocate"
+description: "Author an Allocate rule to distribute shared, central, and untagged cost to the teams that consumed it."
+icon: "share-nodes"
+---
+
+**Allocate** is the last [Model](/model) sub-stage: it distributes the shared, central, and untagged cost that attribution couldn't pin to a single owner — a Kubernetes platform, an API gateway, an enterprise license — to the teams that consumed it. Every move is balanced by double-entry accounting, so the dataset's totals still reconcile to the bill.
+
+This is the hands-on companion to [Attribution & allocation](/attribution-and-allocation), which covers the concepts: double-entry accounting, multi-level chains, and end-to-end traceability. Here we author a single allocation rule.
+
+<Note>
+  Allocation runs only in **Model → Allocate**, after attribution. Within Allocate, rules run **top-down**, so order a multi-level chain from the top.
+</Note>
+
+## Author an allocation rule
+
+An allocation rule reads like a sentence — you fill it in this order:
+
+<Steps>
+  <Step title="Set the scope and level">
+    Choose which providers or accounts the rule applies to, and the **level** it runs at: a single **billing account**, all of one **provider**'s accounts, or **all providers** together.
+  </Step>
+  <Step title="Select the cost to allocate">
+    Add **filters** to select the rows to distribute — the shared service's cost — and a **grouping** that summarizes them.
+  </Step>
+  <Step title="Choose a distribution strategy">
+    Pick how the selected cost is split across receivers:
+
+    - **Fixed** — explicit ratios that sum to 100%, when you already know the split.
+    - **N-way** — split equally across the receivers.
+    - **Proportionate** — split by a driver metric (usage, seats, pod-hours, revenue).
+    - **Replace** — swap coarse cost for finer-grained cost from a platform tool, to avoid double-counting.
+  </Step>
+  <Step title="Choose where recipients come from">
+    Recipients can be an **inline table** you type, the **cost data itself** (each distinct group becomes a recipient), or a **business dataset**.
+  </Step>
+  <Step title="Let the negation post automatically">
+    StitcherAI posts the **balancing negation** against the source for you, so the move nets to zero and totals still reconcile — you don't author it by hand.
+  </Step>
+  <Step title="Add overrides (optional)">
+    Optionally adjust the resulting rows.
+  </Step>
+</Steps>
+
+## Worked example — split a shared platform by usage
+
+Distribute a shared Kubernetes platform's cost across the teams that used it, by pod-hours:
+
+- **Scope / level:** all providers
+- **Select the cost:** the platform's rows (for example `ServiceName` = the platform), grouped by team
+- **Strategy:** Proportionate, driven by pod-hours
+- **Recipients:** from the cost data — each team that consumed the platform
+
+Each team receives a share proportional to its pod-hours, and a balancing negation reduces the platform's central cost by the same total, so the model still reconciles to the bill.
+
+## Multi-level chains
+
+A recipient can itself be a shared service that's allocated onward. Author one rule per level and order them top-down; each hop writes its rule and ratio into the **allocation status columns**, so the whole path stays traceable. See [multi-level allocations](/attribution-and-allocation#multi-level-allocations).
+
+## Result & gotchas
+
+- Every allocation **nets to zero** — nothing is invented or lost; cost is only moved.
+- Rules run **in order** within Allocate; a multi-level chain must run top-down.
+- Allocate distributes what attribution left unassigned — do ownership attribution first with [Lookup](/operator-guides/lookup) and [Mapping](/operator-guides/mapping).
+- The **allocation status columns** record whether each row is original cost, a negation, or an allocation, and which rule and ratio moved it.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Attribution & allocation" icon="scale-balanced" href="/attribution-and-allocation">
+    The concepts — double-entry, multi-level chains, and traceability.
+  </Card>
+
+  <Card title="Generating artifacts" icon="layer-group" href="/generating-artifacts">
+    Build KPIs, chargebacks, and datasets on the allocated model.
+  </Card>
+</CardGroup>
