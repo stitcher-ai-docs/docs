@@ -10,7 +10,7 @@ icon: "share-nodes"
 This is the hands-on companion to [Attribution & allocation](/attribution-and-allocation), which covers the concepts — double-entry accounting, multi-level chains, and end-to-end traceability. Here we author one allocation rule in the **Add / Edit Allocation rules** editor.
 
 <Note>
-  Each rule is a numbered YAML file under `allocate/<level>/` — for example `allocate/billing_account_level/100_kubecost_replace_allocation.yaml`. The **level folder** sets the boundary within which ratios and totals are computed, and the **numeric prefix** sets run order: rules run **top-down**, so order a multi-level chain from the top.
+  Each rule is a numbered YAML file under `allocate/<level>/` — for example `allocate/billing_account_level/100_kubecost_replace_allocation.yaml` or `allocate/cross_provider_level/100_non_k8_shared_cost.yaml`. The **level folder** sets the boundary within which ratios and totals are computed, and the **numeric prefix** sets run order: rules run **top-down**, so order a multi-level chain from the top.
 </Note>
 
 ## Choose the level
@@ -19,19 +19,19 @@ The level determines the boundary within which source cost and distribution rati
 
 <CardGroup cols={3}>
   <Card title="Billing account" icon="file-invoice">
-    Runs independently within each billing account; ratios and totals use only that account's data.
+    Runs independently within each billing account (`billing_account_level`); ratios and totals use only that account's data.
   </Card>
 
   <Card title="Provider" icon="cloud">
     Runs across all of one provider's accounts together — use when the source cost or its consumers span multiple accounts of the same provider.
   </Card>
 
-  <Card title="All providers" icon="globe">
-    Runs across the whole cost dataset together.
+  <Card title="Cross-provider" icon="globe">
+    Runs across providers together (`cross_provider_level`), for cost shared across the whole estate.
   </Card>
 </CardGroup>
 
-The editor then walks four tabs — **General configuration → Define the Scope → What cost to allocate → How to distribute the cost** — plus a final tab for column overrides.
+The editor walks six tabs: **General configuration → Define the Scope → What cost to allocate → How to distribute the cost → Negation config → Add business context to allocation rows**.
 
 ## General configuration
 
@@ -81,9 +81,9 @@ Pick a **Strategy**, then a distribution source under **Distribute based on**. T
 | **Fixed** | Explicit ratios you already know. | Inline table · Business dataset |
 | **N-way** | Splits equally across recipients. | Inline table · Cost data · Business dataset |
 | **Proportionate** | Splits by a driver metric. | Cost data · Business dataset |
-| **Replace** | Swaps coarse cost for finer-grained cost from a platform tool (e.g. Kubecost), to avoid double-counting. | _(see note below)_ |
+| **Replace** | Swaps coarse cost for finer-grained cost from another dataset, to avoid double-counting. | Merge allocated cost |
 
-The three distribution sources:
+### Fixed, N-way & Proportionate
 
 <Tabs>
   <Tab title="Inline table">
@@ -97,7 +97,7 @@ The three distribution sources:
   <Tab title="Cost data">
     Derive recipients from the cost dataset itself. **Filter conditions** choose which rows contribute, and **Import columns** bring extra columns onto the allocation rows.
 
-    - **Proportionate** adds a required **Metric column** — each recipient's share is its metric value ÷ the total metric across recipients (for example, split a shared API gateway by each team's own `BilledCost`).
+    - **Proportionate** adds a required **Metric column** — each recipient's share is `recipient_metric / sum(all_recipients_metric)`. The metric can be any numeric column: `BilledCost`, `ApiCallCount`, `ActiveSeats`, etc.
     - **N-way** splits equally across the distinct groups found in the cost data.
 
     Use this when the recipients' usage is already captured in cost data.
@@ -114,17 +114,35 @@ The three distribution sources:
   </Tab>
 </Tabs>
 
-<Note>
-  **Replace** strategy configuration isn't documented here yet — screenshots pending. Conceptually it swaps a coarse cost line for finer-grained cost from a platform tool (for example, replacing an aggregate Kubernetes bill with Kubecost's per-workload breakdown) so the same spend isn't counted twice.
-</Note>
+### Replace — swap coarse cost for finer-grained cost
 
-## Column overrides
+Use **Replace** when two datasets both hold cost for the same resources at different granularities and you want to swap the coarse rows for the fine-grained ones to avoid double-counting — for example, replacing an aggregate Kubernetes cluster line with a per-pod usage export so each team sees its actual share. Under **Distribute based on**, Replace offers one option, **Merge allocated cost**.
 
-The final tab adds **Columns to override** — columns written onto the allocation rows with a constant value or an expression, for extra context. _(Full field list pending screenshots.)_
+<Steps>
+  <Step title="Point at the two datasets">
+    **Source cost dataset** (the coarse rows to negate) and **Replacement cost dataset** (the finer rows that take their place) — both required.
+  </Step>
+  <Step title="Set the mismatch actions">
+    **When selected source cost exceeds replacement cost** and **When replacement cost exceeds selected source cost** choose the action to take in each direction when the two amounts don't line up.
+  </Step>
+  <Step title="Match the rows">
+    **Negation match columns** map columns from the source to the replacement so rows can be paired (each entry is a **Source dataset column** and a **Replacement dataset column**; either side can be a column or an expression such as `LOWER(TRIM(ResourceId))`). For each matched group the negation ratio is the smaller of `replacement / source` or `1.0`. Rows found only in the source are excluded from output; rows only in the replacement are ignored. Left empty, the negation follows the source cost proportions.
+  </Step>
+  <Step title="Import replacement detail (optional)">
+    **Negation import columns** split each negation row by a replacement-dataset column — one output row per distinct value, proportional to that value's share of the group's replacement cost (the group total is unchanged). Each imported column can be renamed with `rename_to`. Requires negation match columns to be set.
+  </Step>
+</Steps>
 
-## The balancing negation is automatic
+## Negation config
 
-You don't author the negation. For every rule, StitcherAI posts a **balancing negation** against the source equal to the amount moved, so the allocation and negation **net to zero** and the dataset still reconciles to the bill. See [double-entry accounting](/attribution-and-allocation#double-entry-accounting).
+Negation rows are generated automatically for every rule so the allocation and its negation **net to zero**; this tab controls their **shape**, not whether they're created.
+
+- **Negation type** — **Standard FOCUS negation** (default FOCUS dimensions and metrics), **Customized FOCUS negation** (the standard set plus dimensions/metrics you add), or **User defined negation** (full control over which dimensions and metrics appear).
+- **Negation granularity** — **Same as source**, **Daily**, or **Monthly** (the time granularity of the negation rows).
+
+## Add business context to allocation rows
+
+Add **Columns to override** to stamp extra context (department, cost center, tags) onto the allocation rows. Each entry is a **Name** (typically `x_`-prefixed) and a **Value** — a single constant or an expression evaluated per row. For anything needing conditional logic, do it upstream in the Model stage with [Lookup](/operator-guides/lookup), [Mapping](/operator-guides/mapping), or an unpack operator instead.
 
 ## Worked example — split a shared API gateway by usage
 
@@ -148,6 +166,8 @@ Because allocation rows can be re-allocated, a recipient can itself be a shared 
 - Rules run in **numeric-prefix order** within `allocate/`.
 - **Skip** on missing distribution data can silently no-op if the data never arrives.
 - **Grouping columns** drop every source column not listed (plus cost metrics).
+- **Replace** pairs rows by the negation match columns: unmatched source rows are dropped and unmatched replacement rows ignored, so verify the match keys.
+- **Negation config** controls the negation rows' shape (Standard / Customized / User defined FOCUS) and granularity, not whether they exist.
 - The rule's **name and version** are stamped into the allocation status columns (the name in `x_AllocationRuleName`) on source, negation, and allocation rows.
 
 ## Related
