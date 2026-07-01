@@ -1,0 +1,72 @@
+---
+title: "Derive a column with a Mapping operation"
+sidebarTitle: "Mapping"
+description: "Add or update a column from an ordered set of conditions, with a default value for rows that match none."
+icon: "list-check"
+---
+
+A **Mapping** operation adds or updates a column from an **ordered set of conditions**: for each row, the first matching condition sets the value written to the target column, and rows that match nothing receive a default. It's the tool for deriving a field from rules — an environment from a naming pattern, a team from an account, a tier from a threshold.
+
+**Availability.** Mapping runs in both **Prepare** and **Enrich**. In Prepare it works on raw columns before FOCUS exists; in Enrich it works on FOCUS columns and is one of the main ways [attribution](/attribution-and-allocation) happens.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure mapping**. For **Merge policy** and the **Simple vs SQL condition** mechanics, see the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages).
+</Note>
+
+## Configure the mapping
+
+<Steps>
+  <Step title="Choose the target column">
+    Set **Column type**, then **Column name**:
+
+    - **FOCUS column** — part of the FOCUS v1.2 spec (for example `BilledCost`, `ServiceName`). The name must match the spec exactly and is case-sensitive.
+    - **Custom column** — a business-specific field not in FOCUS. Its name must start with `x_` (the FOCUS extension namespace), for example `x_team` or `x_cost_center`.
+
+    The **Column name** dropdown lists the valid options for the type you picked.
+  </Step>
+  <Step title="Set a default value (optional)">
+    Turn on **Enable default value** to write a value to every row that matches **none** of the conditions. Leave it off and unmatched rows get null.
+  </Step>
+  <Step title="Add mapping conditions">
+    Under **Mapping conditions**, add one or more rules. Each rule is a [condition](/pipeline-overview#building-blocks-shared-across-stages) — **Simple** (column, operator, value) or **SQL** (a predicate) — paired with a **Mapped value** written when it matches. The mapped value can be a static value, a reference to another column, or an expression using SQL-style functions.
+
+    Rules are evaluated **in order** — the first condition a row matches sets its value, so put the most specific rules first.
+  </Step>
+  <Step title="Set the merge policy">
+    **Merge policy** decides how the result is written: **Add** (new column, fail if it exists), **Upsert** (fill only empty values), or **Overwrite** (replace all). See [merge behavior](/pipeline-overview#building-blocks-shared-across-stages).
+  </Step>
+</Steps>
+
+## Worked example — derive `x_Environment`
+
+Tag every row with an environment based on its subaccount name:
+
+| Condition | Mapped value |
+| --- | --- |
+| `SubAccountName LIKE 'integ-%'` | `test` |
+| `SubAccountName LIKE 'prod-%'` | `production` |
+| _(default)_ | `development` |
+
+- **Column type:** Custom column · **Column name:** `x_Environment`
+- **Mapping conditions:** the two rules above, in order
+- **Enable default value:** `development`
+
+A subaccount starting with `integ-` becomes `test`, one starting with `prod-` becomes `production`, and anything else falls through to `development`. Because rules are ordered, the first match wins.
+
+## Result & gotchas
+
+- Rows that match no condition receive the **default value**, or null if none is set.
+- With **Merge policy: Add**, the operation **fails if the column already exists** — use Upsert or Overwrite to write into an existing column.
+- **FOCUS** column names must match the spec exactly (case-sensitive); custom columns must start with `x_`.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Mapping sits among the Prepare and Enrich operators.
+  </Card>
+
+  <Card title="Shared building blocks" icon="cubes" href="/pipeline-overview#building-blocks-shared-across-stages">
+    Scope, conditions, and merge behavior — used by every operator.
+  </Card>
+</CardGroup>

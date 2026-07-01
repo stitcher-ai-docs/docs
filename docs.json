@@ -71,6 +71,15 @@
           "security",
           "authoring-and-version-control"
         ]
+      },
+      {
+        "group": "Operator guides",
+        "icon": "wand-magic-sparkles",
+        "pages": [
+          "operator-guides/mapping",
+          "operator-guides/lookup",
+          "operator-guides/complex-field-unpack"
+        ]
       }
     ]
   },
