@@ -83,7 +83,8 @@
           "operator-guides/compute-column",
           "operator-guides/filter-rows",
           "operator-guides/remove-columns",
-          "operator-guides/simulate-periodic-cost"
+          "operator-guides/simulate-periodic-cost",
+          "operator-guides/ai-assisted-mapping"
         ]
       }
     ]
