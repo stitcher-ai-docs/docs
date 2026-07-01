@@ -79,7 +79,8 @@
           "operator-guides/mapping",
           "operator-guides/lookup",
           "operator-guides/complex-field-unpack",
-          "operator-guides/json-field-unpack"
+          "operator-guides/json-field-unpack",
+          "operator-guides/compute-column"
         ]
       }
     ]
