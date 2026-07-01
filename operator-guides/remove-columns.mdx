@@ -1,0 +1,52 @@
+---
+title: "Drop columns with Remove columns"
+sidebarTitle: "Remove columns"
+description: "Drop one or more non-FOCUS columns from the dataset."
+icon: "eraser"
+---
+
+A **Remove columns** operation drops one or more columns from the dataset. Use it to exclude sensitive or PII columns before writing to downstream destinations, reduce dataset size by dropping high-cardinality columns consumers don't need, or clean up intermediate columns created by earlier operations in the same sub-stage.
+
+Only **non-FOCUS** columns can be removed — FOCUS columns are protected by the pipeline.
+
+**Availability.** Runs in both **Prepare** and **Enrich**.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure columns to remove**. Remove columns writes no column, so it has **no merge policy**.
+</Note>
+
+## Configure the removal
+
+<Steps>
+  <Step title="List the columns to remove">
+    Under **Columns to remove**, add the names of the columns to drop. Only non-FOCUS columns are eligible — raw source columns and custom `x_` columns can go; FOCUS columns can't.
+  </Step>
+  <Step title="Handle missing columns (optional)">
+    Turn on **Skip if columns are missing** so the operation still succeeds when a listed column isn't present — useful when a column only appears for some providers or runs. Left off, a missing column raises an error.
+  </Step>
+</Steps>
+
+## Worked example — drop a raw tag blob before export
+
+After unpacking the keys you need from a raw `Tags` column, drop the original blob so it doesn't reach downstream systems:
+
+- **Columns to remove:** `Tags`
+- **Skip if columns are missing:** on (in case a provider's export omits it)
+
+## Result & gotchas
+
+- **FOCUS columns are protected** — only non-FOCUS columns (raw source fields and custom `x_` columns) can be removed.
+- With **Skip if columns are missing** off, a listed column that isn't present will error the run; turn it on to tolerate absence.
+- To drop **rows** rather than columns, use [Filter rows](/operator-guides/filter-rows).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Filter rows" icon="filter" href="/operator-guides/filter-rows">
+    Keep or drop whole rows instead of columns.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Remove columns sits among the Prepare and Enrich operators.
+  </Card>
+</CardGroup>

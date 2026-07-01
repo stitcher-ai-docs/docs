@@ -43,7 +43,7 @@ Another common one: **Exclude** with the SQL condition `BilledCost < 0 OR Charge
 
 - Conditions are **OR-combined** — a row matches if it satisfies any one of them. For **AND** logic, put it in a single SQL condition.
 - **Include** keeps matches and drops the rest; **Exclude** drops matches and keeps the rest — easy to invert by accident.
-- Filter rows removes whole **rows**; to drop **columns** instead, use the Remove columns operator.
+- Filter rows removes whole **rows**; to drop **columns** instead, use [Remove columns](/operator-guides/remove-columns).
 
 ## Related
 
