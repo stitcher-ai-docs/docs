@@ -7,7 +7,7 @@ icon: "brackets-curly"
 
 A **Complex Field Unpack** operation explodes keys from an **object / map** column — for example a provider `Tags` or `SkuPriceDetails` field — into their own columns. Each key you select becomes a separate column you can then filter, map, or attribute on.
 
-For a **JSON value stored as text**, use **JSON Field Unpack** instead — same mechanics, different source type.
+For JSON stored as text in a column, use [JSON Field Unpack](/operator-guides/json-field-unpack) instead — the key selection rules work identically.
 
 **Availability.** Runs in both **Prepare** and **Enrich**. In Prepare it flattens raw provider blobs before FOCUS exists; in Enrich it works on FOCUS-era data.
 
@@ -19,17 +19,21 @@ For a **JSON value stored as text**, use **JSON Field Unpack** instead — same 
 
 <Steps>
   <Step title="Pick the source column">
-    Set **Source column name** to the complex column to unpack — a Map, struct, or JSON field such as `Tags` or `SkuPriceDetails`.
+    Set **Source column name** to the complex column to unpack — a Map or struct field such as `Tags` or `SkuPriceDetails`.
   </Step>
-  <Step title="Add a key selection rule">
-    Under **Key selection rule**, add one or more rules. Each rule has a **Selection type**:
+  <Step title="Add one or more key selection rules">
+    Each rule's **Selection type** decides which keys are pulled out:
 
-    - **Single key** — extract exactly one key by its exact, case-sensitive name, into one named column.
-    - **List of keys** — extract several keys by exact name; each becomes its own column.
-    - **Key pattern** — extract every key whose name matches a regular expression; each becomes its own column, named from the key (with optional prefix/suffix).
+    - **Select a single key** — one key by its exact, case-sensitive name (**Key value**).
+    - **Select a list of keys** — several keys by exact name (**Key values**); each becomes its own column.
+    - **Select with a key pattern** — every key whose name matches a regular expression (**Key pattern**, e.g. `^label_.*`); each match becomes its own column.
   </Step>
   <Step title="Name the target column(s)">
-    For each rule, set the **Target configuration**: **Column type** (FOCUS or Custom — custom columns start with `x_`) and **Target column name**. Optionally enable a **target column transformation** to derive the value with an expression, or a **target column default value** used when the key is absent.
+    Set the rule's **Target configuration**:
+
+    - **Column type** — FOCUS or Custom (custom columns start with `x_`).
+    - For a single key, a **Target column name**. For a list or a pattern, a **Target column prefix** and **Target column suffix** that wrap each key name — e.g. key `id` with prefix `condition_` and suffix `_foo` becomes `condition_id_foo`.
+    - Optionally **Enable target column transformation** (derive the value with an expression) or **Enable target column default value** (used when the key is absent).
   </Step>
 </Steps>
 
@@ -38,7 +42,7 @@ For a **JSON value stored as text**, use **JSON Field Unpack** instead — same 
 Extract the `team` key from a provider `Tags` map into its own attribution column:
 
 - **Source column name:** `Tags`
-- **Selection type:** Single key · **Key value:** `team`
+- **Selection type:** Select a single key · **Key value:** `team`
 - **Column type:** Custom · **Target column name:** `x_team`
 - **Enable target column default value:** `unassigned` (for rows whose tag is missing)
 
@@ -46,18 +50,18 @@ Every row's `team` tag now lives in its own `x_team` column, ready to attribute 
 
 ## Result & gotchas
 
-- Key names are **exact and case-sensitive** for Single key and List of keys — use **Key pattern** to catch variants by regular expression.
-- With **Key pattern**, each matched key becomes its own column; use the prefix/suffix to keep names tidy and avoid collisions.
-- There's **no merge policy** on field unpack — pick target column names that don't collide with columns already in the dataset.
+- Key names are **exact and case-sensitive** for single key and list modes — use a **key pattern** to catch variants by regular expression.
+- With a **list** or **pattern**, each matched key becomes its own column; the prefix and suffix build the column name (`prefix` \+ key \+ `suffix`).
+- There's **no merge policy** on field unpack — pick target names that don't collide with columns already in the dataset.
 
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
-    Where field unpack sits among the Prepare and Enrich operators.
+  <Card title="JSON Field Unpack" icon="code" href="/operator-guides/json-field-unpack">
+    The same operation for JSON stored as text.
   </Card>
 
-  <Card title="Shared building blocks" icon="cubes" href="/pipeline-overview#building-blocks-shared-across-stages">
-    Scope and conditions — used by every operator.
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where field unpack sits among the Prepare and Enrich operators.
   </Card>
 </CardGroup>

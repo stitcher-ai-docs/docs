@@ -1,0 +1,67 @@
+---
+title: "Unpack a JSON field"
+sidebarTitle: "JSON Field Unpack"
+description: "Surface key-value pairs from a JSON-text column as their own columns."
+icon: "code"
+---
+
+A **JSON Field Unpack** operation surfaces key-value pairs from a column that stores **JSON text** (rather than a native map/struct type) as their own columns — ready to filter, map, or attribute on.
+
+It's the JSON-text counterpart of [Complex Field Unpack](/operator-guides/complex-field-unpack); the key selection rules work identically. Use this one when the source column holds a JSON **string**.
+
+**Availability.** Runs in both **Prepare** and **Enrich**.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure field unpack**. Field unpack has **no merge policy** — each selected key is written to its own target column.
+</Note>
+
+## Configure the unpack
+
+<Steps>
+  <Step title="Pick the source column">
+    Set **Source column name** to the column holding JSON text — for example a `labels` column whose values look like `'{"cost_center":"cc-eng","app":"api"}'`.
+  </Step>
+  <Step title="Add one or more key selection rules">
+    Each rule's **Selection type** decides which keys are pulled out:
+
+    - **Select a single key** — one key by its exact, case-sensitive name (**Key value**).
+    - **Select a list of keys** — several keys by exact name (**Key values**); each becomes its own column.
+    - **Select with a key pattern** — every key whose name matches a regular expression (**Key pattern**, e.g. `^label_.*`); each match becomes its own column.
+  </Step>
+  <Step title="Name the target column(s)">
+    Set the rule's **Target configuration**:
+
+    - **Column type** — FOCUS or Custom (custom columns start with `x_`).
+    - For a single key, a **Target column name**. For a list or a pattern, a **Target column prefix** and **Target column suffix** that wrap each key name — e.g. key `id` with prefix `condition_` and suffix `_foo` becomes `condition_id_foo`.
+    - Optionally **Enable target column transformation** (derive the value with an expression) or **Enable target column default value** (used when the key is absent).
+  </Step>
+</Steps>
+
+## Worked example — unpack a `labels` JSON column
+
+A `labels` column stores JSON such as `'{"cost_center":"cc-eng","app":"api"}'`. Pull two keys into their own columns with an `x_` prefix:
+
+- **Source column name:** `labels`
+- **Selection type:** Select a list of keys · **Key values:** `cost_center`, `app`
+- **Column type:** Custom · **Target column prefix:** `x_`
+
+`cost_center` lands in `x_cost_center` and `app` in `x_app`, so a row billed at `90.00` on `gce-001` now carries `x_cost_center = cc-eng` and `x_app = api`.
+
+## Result & gotchas
+
+- The source must be **JSON text**. For a native map/struct column, use [Complex Field Unpack](/operator-guides/complex-field-unpack) instead.
+- Key names are **exact and case-sensitive** for single key and list modes — use a **key pattern** to catch related keys by regular expression.
+- With a **list** or **pattern**, the prefix and suffix build each column name (`prefix` \+ key \+ `suffix`).
+- There's **no merge policy** — pick target names that don't collide with columns already in the dataset.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Complex Field Unpack" icon="brackets-curly" href="/operator-guides/complex-field-unpack">
+    The same operation for native object/map columns.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where field unpack sits among the Prepare and Enrich operators.
+  </Card>
+</CardGroup>
