@@ -1,0 +1,58 @@
+---
+title: "Keep or drop rows with Filter rows"
+sidebarTitle: "Filter rows"
+description: "Keep or remove rows based on one or more filter conditions."
+icon: "filter"
+---
+
+A **Filter rows** operation keeps or removes rows based on one or more conditions. Use it to drop tax, credit, or refund rows before analysis, exclude test and sandbox accounts, remove rows already captured in more detail by another dataset (to avoid double-counting), or narrow a dataset to the service categories a team cares about.
+
+**Availability.** Runs in both **Prepare** and **Enrich**.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure filter rows**. For the **Simple vs SQL condition** mechanics, see the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages). Filter rows writes no column, so it has **no merge policy**.
+</Note>
+
+## Configure the filter
+
+<Steps>
+  <Step title="Choose the filter method">
+    **Filter method** decides what happens to matched rows:
+
+    - **Include** — keep only rows that match; all others are removed.
+    - **Exclude** — remove all rows that match; all others are kept.
+  </Step>
+  <Step title="Add filter conditions">
+    Under **Filter conditions**, add one or more [conditions](/pipeline-overview#building-blocks-shared-across-stages). They're combined with **OR** — a row matches if it satisfies **any** of them. Each condition is:
+
+    - **Simple** — a column, an operator (`=`, `!=`, `>`, `>=`, `<`, `<=`, `is null`, `is not null`, `in`, `not in`, `like`, `not like`), and a value.
+    - **SQL** — a SQL predicate for more complex logic (AND/OR combinations, functions, range checks).
+  </Step>
+</Steps>
+
+## Worked example — keep only Compute charges
+
+- **Filter method:** Include
+- **Condition (Simple):** `ServiceCategory` equals `Compute`
+
+Only rows whose `ServiceCategory` is `Compute` remain; Storage, Database, and the rest are dropped.
+
+Another common one: **Exclude** with the SQL condition `BilledCost < 0 OR ChargeCategory IN ('Credit', 'Refund')` strips credits and refunds before cost analysis.
+
+## Result & gotchas
+
+- Conditions are **OR-combined** — a row matches if it satisfies any one of them. For **AND** logic, put it in a single SQL condition.
+- **Include** keeps matches and drops the rest; **Exclude** drops matches and keeps the rest — easy to invert by accident.
+- Filter rows removes whole **rows**; to drop **columns** instead, use the Remove columns operator.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Shared building blocks" icon="cubes" href="/pipeline-overview#building-blocks-shared-across-stages">
+    Scope and the Simple vs SQL condition mechanics.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Filter rows sits among the Prepare and Enrich operators.
+  </Card>
+</CardGroup>
