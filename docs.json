@@ -82,7 +82,8 @@
           "operator-guides/json-field-unpack",
           "operator-guides/compute-column",
           "operator-guides/filter-rows",
-          "operator-guides/remove-columns"
+          "operator-guides/remove-columns",
+          "operator-guides/simulate-periodic-cost"
         ]
       }
     ]
