@@ -123,7 +123,10 @@ Use **Replace** when two datasets both hold cost for the same resources at diffe
     **Source cost dataset** (the coarse rows to negate) and **Replacement cost dataset** (the finer rows that take their place) — both required.
   </Step>
   <Step title="Set the mismatch actions">
-    **When selected source cost exceeds replacement cost** and **When replacement cost exceeds selected source cost** choose the action to take in each direction when the two amounts don't line up.
+    Choose what happens when the matched amounts don't line up:
+
+    - **When selected source cost exceeds replacement cost** — **Error** or **Proportionally negate source cost** (negate the source in proportion to the replacement).
+    - **When replacement cost exceeds selected source cost** — **Error** or **Negate all source cost** (negate the full selected source amount).
   </Step>
   <Step title="Match the rows">
     **Negation match columns** map columns from the source to the replacement so rows can be paired (each entry is a **Source dataset column** and a **Replacement dataset column**; either side can be a column or an expression such as `LOWER(TRIM(ResourceId))`). For each matched group the negation ratio is the smaller of `replacement / source` or `1.0`. Rows found only in the source are excluded from output; rows only in the replacement are ignored. Left empty, the negation follows the source cost proportions.
