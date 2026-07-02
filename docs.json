@@ -9,7 +9,7 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "groups": [
       {
         "group": "Getting Started",
         "pages": [
@@ -17,9 +17,7 @@
           "quickstart",
           "how-to/set-up-authoring-environment"
         ]
-      }
-    ],
-    "groups": [
+      },
       {
         "group": "Overview",
         "pages": [
