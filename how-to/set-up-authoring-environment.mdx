@@ -1,0 +1,59 @@
+---
+title: "How to: Set up my authoring environment"
+description: "Install VS Code and the StitcherAI extension, clone your pipeline configuration repo, and log in — the one-time setup that unlocks the full authoring environment."
+---
+
+Before you can build your cost model in the editor, set up the authoring environment: install the extension, open your pipeline configuration repo, and log in.
+
+## Prerequisites
+
+- GitHub access to your **pipeline configuration repo** — see [Access & administration](/access-and-administration)
+- A StitcherAI account with access to the relevant environment (same identity as the web app)
+
+## Set up the environment
+
+<Steps>
+  <Step title="Install VS Code and the StitcherAI extension">
+    Download and install [VS Code](https://code.visualstudio.com), then install the **StitcherAI extension** from within VS Code.
+  </Step>
+
+  <Step title="Clone your pipeline configuration repo">
+    Clone your pipeline configuration repo to your machine:
+
+    ```bash
+    git clone <your-pipeline-repo-url>
+    ```
+  </Step>
+
+  <Step title="Open that repo in VS Code">
+    Use **File → Open Folder** and select the folder you just cloned.
+  </Step>
+
+  <Step title="Log into the StitcherAI extension">
+    With the repo open, click **log in** in the StitcherAI extension. A new browser tab opens — sign in with the same identity you use for the web app. Confirming there completes the login and hands control back to VS Code.
+
+    <Note>
+      Log in only after opening your pipeline configuration repo. The extension needs that project context to complete the login loop — logging in first, or with the wrong folder open, means the browser confirmation won't connect back to VS Code.
+    </Note>
+  </Step>
+</Steps>
+
+## Verify it worked
+
+Once logged in, you should see the StitcherAI panel active in the activity bar, the schema browser populated with your data, and the AI chat panel and start-page prompts available.
+
+<Tip>
+  If you don't see these, confirm your pipeline configuration repo is still the open folder, then log out and back in.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="The semantic pipeline" icon="diagram-project" href="/pipeline-overview">
+    How a pipeline is composed, and the four phases you'll build.
+  </Card>
+
+  <Card title="Authoring & version control" icon="code" href="/authoring-and-version-control">
+    Modeling with AI chat, branches, pull requests, and tags.
+  </Card>
+</CardGroup>
