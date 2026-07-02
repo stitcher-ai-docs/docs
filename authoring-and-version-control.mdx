@@ -105,19 +105,10 @@ The web app at [app.stitcher.ai](https://app.stitcher.ai) is the operational hub
 
 ## Pushing your own data in
 
-Because you own your data, you can push it in from your own side. Customer-side push tools write **any cost dataset to your own storage** — your own keys, your own infrastructure — where a StitcherAI **file connection** then reads it.
-
-<Steps>
-  <Step title="Run a push tool on your side">
-    A customer-side tool (for example, one that syncs an AI platform's usage) runs with **your credentials, in your environment**, and writes files to **your own bucket**.
-  </Step>
-  <Step title="Read it with a file source">
-    A StitcherAI file [data source](/connections-and-credentials) points at that storage and ingests the files like any other source — see [the data foundation](/data-foundation).
-  </Step>
-</Steps>
+You can bring in cost data, but StitcherAI doesn't need to be connected to the system that generates it. Put your cost datasets in a cloud storage bucket you own, then point a StitcherAI file [data source](/connections-and-credentials) at that bucket. StitcherAI reads the files from there — see [the data foundation](/data-foundation).
 
 <Info>
-  Your credentials never leave your side. The push tool runs in your environment; StitcherAI only reads the resulting files from storage you own.
+  StitcherAI's access is scoped only to the bucket, and only to what you choose to place in it. It never touches the systems or credentials that generate the underlying cost data.
 </Info>
 
 ## Related
