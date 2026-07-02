@@ -11,14 +11,6 @@
   "navigation": {
     "groups": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart",
-          "how-to/set-up-authoring-environment"
-        ]
-      },
-      {
         "group": "Overview",
         "pages": [
           "introduction",
@@ -26,6 +18,15 @@
           "what-makes-stitcherai-different",
           "architecture-two-engines",
           "access-and-administration"
+        ]
+      },
+      {
+        "group": "Getting Started",
+        "pages": [
+          "how-to/set-up-authoring-environment",
+          "how-to/bring-in-a-dataset",
+          "how-to/attribute-cost",
+          "how-to/build-an-allocation"
         ]
       },
       {
