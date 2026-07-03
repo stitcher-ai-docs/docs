@@ -53,17 +53,17 @@ Once data is in FOCUS, **Enrich** adds business meaning on top — and this is w
 
 Each operator below also runs in **Prepare** unless it's marked Enrich-only. All of them use the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages) — scope, conditions, and merge behavior.
 
-| Operator | What it does | When it's useful |
-| --- | --- | --- |
-| **Mapping** | Adds or updates a column from an **ordered set of conditions**, with a default value for rows that match none. | Derive `x_team` or `x_cost_center` from rules. |
-| **Lookup** | Merges columns from a **business dataset** into the cost dataset by matching values in a join column; you can rename imported columns and choose how to handle duplicate matches. | Attribute resources to owners via a mapping table. |
-| **Unpack object value** | Explodes keys from an **object/map field** into new columns — a single named key, a list of keys, or all keys matching a pattern. | Flatten provider tag or label blobs. |
-| **Unpack JSON value** | The same, for a **JSON value stored as text**. | Flatten a JSON metadata field. |
-| **Compute column** | Sets a column to a **static value**, a **column reference**, or an **expression** derived at runtime with SQL-style functions. | Derived metrics, constants, calculated fields. |
-| **Filter rows** | **Keeps or removes** rows that match one or more conditions. | Drop test namespaces or non-billable rows. |
-| **Remove columns** | Drops **non-FOCUS columns**. FOCUS columns are protected and cannot be removed. | Shed sensitive or oversized raw fields. |
-| **Simulate periodic cost**_(Enrich only)_ | Projects **recent or historical cost forward** so in-month spend isn't a surprise. Source the projection from the previous month or a historical average. | End-of-month, quarterly, or late-arriving invoices. |
-| **AI assisted mapping**_(Enrich only)_ | Applies a **custom-trained fuzzy-mapping model** at run time to collapse messy variants into one canonical value, with a minimum-accuracy guard and a fallback for unknowns. | Normalize inconsistent vendor, region, or service names. |
+| Operator | What it does | When it's useful | Guide |
+| --- | --- | --- | --- |
+| **Mapping** | Adds or updates a column from an **ordered set of conditions**, with a default value for rows that match none. | Derive `x_team` or `x_cost_center` from rules. | [How to…](/operator-guides/mapping) |
+| **Lookup** | Merges columns from a **business dataset** into the cost dataset by matching values in a join column; you can rename imported columns and choose how to handle duplicate matches. | Attribute resources to owners via a mapping table. | [How to…](/operator-guides/lookup) |
+| **Complex Field Unpack** | Explodes keys from an **object/map field** into new columns — a single named key, a list of keys, or all keys matching a pattern. | Flatten provider tag or label blobs. | [How to…](/operator-guides/complex-field-unpack) |
+| **JSON Field Unpack** | The same, for a **JSON value stored as text**. | Flatten a JSON metadata field. | [How to…](/operator-guides/json-field-unpack) |
+| **Compute column** | Sets a column to a **static value**, a **column reference**, or an **expression** derived at runtime with SQL-style functions. | Derived metrics, constants, calculated fields. | [How to…](/operator-guides/compute-column) |
+| **Filter rows** | **Keeps or removes** rows that match one or more conditions. | Drop test namespaces or non-billable rows. | [How to…](/operator-guides/filter-rows) |
+| **Remove columns** | Drops **non-FOCUS columns**. FOCUS columns are protected and cannot be removed. | Shed sensitive or oversized raw fields. | [How to…](/operator-guides/remove-columns) |
+| **Simulate periodic cost**_(Enrich only)_ | Projects **recent or historical cost forward** so in-month spend isn't a surprise. Source the projection from the previous month or a historical average. | End-of-month, quarterly, or late-arriving invoices. | [How to…](/operator-guides/simulate-periodic-cost) |
+| **AI assisted mapping**_(Enrich only)_ | Applies a **custom-trained fuzzy-mapping model** at run time to collapse messy variants into one canonical value, with a minimum-accuracy guard and a fallback for unknowns. | Normalize inconsistent vendor, region, or service names. | [How to…](/operator-guides/ai-assisted-mapping) |
 
 <Info>
   **Amortize cost** — spreading a charge over time, for example recognizing an annual SaaS contract monthly — is **forthcoming**. It is not available yet.

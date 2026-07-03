@@ -1,0 +1,57 @@
+---
+title: "Derive a column with Compute column"
+sidebarTitle: "Compute column"
+description: "Set a column to a static value, another column, or a computed expression."
+icon: "calculator"
+---
+
+A **Compute column** operation sets a column to a **static value**, a **reference to another column**, or an **expression** computed at run time with SQL-style functions. Use it for derived metrics, constants, and calculated fields — anything where the value comes from a formula rather than a lookup or a set of conditions.
+
+**Availability.** Runs in both **Prepare** and **Enrich**.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure compute column**. Unlike Mapping and Lookup, Compute column exposes **no merge policy** — it writes the single column you name.
+</Note>
+
+## Configure the compute column
+
+<Steps>
+  <Step title="Choose the target column">
+    Set **Column type** — **FOCUS column** (the name must match the FOCUS v1.2 spec exactly, case-sensitive) or **Custom column** (a business field whose name starts with `x_`) — then **Column name**.
+  </Step>
+  <Step title="Set the column value">
+    **Column value** can be:
+
+    - a **static value** — a fixed string, number, or boolean;
+    - a **column reference** — the name of another column in the dataset;
+    - or an **expression** — a dynamic value computed at run time with SQL-style functions (string manipulation, conditionals, math, date).
+  </Step>
+</Steps>
+
+## Worked example — derive a cost-center group
+
+Extract the part of `CostCenter` before the first `-` into a new column:
+
+- **Column type:** Custom · **Column name:** `x_cc_group`
+- **Column value (expression):** `SUBSTR(CostCenter, 0, STRPOS(CostCenter, '-'))`
+
+A `CostCenter` of `eng-platform` yields `eng`, so you can group and report by the leading segment.
+
+## Result & gotchas
+
+- The value is exactly one of static / column reference / expression — pick per the field.
+- Expressions use SQL-style functions (`SUBSTR`, `CONCAT_WS`, `IF`, and more).
+- **FOCUS** column names must match the spec exactly (case-sensitive); custom columns must start with `x_`.
+- Need conditional, rule-based values instead of one formula? Use a [Mapping](/operator-guides/mapping) operation.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Mapping" icon="list-check" href="/operator-guides/mapping">
+    Derive a column from an ordered set of conditions instead of one expression.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Compute column sits among the Prepare and Enrich operators.
+  </Card>
+</CardGroup>

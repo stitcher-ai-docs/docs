@@ -51,6 +51,7 @@
         "group": "Attribution, artifacts & governance",
         "pages": [
           "attribution-and-allocation",
+          "allocate-shared-cost",
           "generating-artifacts",
           "forecasting",
           "cost-governance"
@@ -69,6 +70,21 @@
           "running-and-monitoring",
           "security",
           "authoring-and-version-control"
+        ]
+      },
+      {
+        "group": "Operator guides",
+        "icon": "wand-magic-sparkles",
+        "pages": [
+          "operator-guides/mapping",
+          "operator-guides/lookup",
+          "operator-guides/complex-field-unpack",
+          "operator-guides/json-field-unpack",
+          "operator-guides/compute-column",
+          "operator-guides/filter-rows",
+          "operator-guides/remove-columns",
+          "operator-guides/simulate-periodic-cost",
+          "operator-guides/ai-assisted-mapping"
         ]
       }
     ]

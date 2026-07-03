@@ -1,0 +1,67 @@
+---
+title: "Attribute cost with a Lookup"
+sidebarTitle: "Lookup"
+description: "Merge columns from a business dataset into your cost data by matching a join column."
+icon: "link"
+---
+
+A **Lookup** operation merges columns from a **business dataset** into the cost dataset by matching values in a **join column**. It's the standard way to attach ownership — team, cost center, owner — or any other business context to each cost row from a mapping table.
+
+**Availability.** Lookup runs in both **Prepare** and **Enrich**, but it's overwhelmingly an Enrich operation: attaching business context on top of FOCUS columns is where [attribution](/attribution-and-allocation) happens.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure lookup**. For **Merge policy** and the **Simple vs SQL condition** mechanics, see the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages).
+</Note>
+
+## Configure the lookup
+
+<Steps>
+  <Step title="Choose the business dataset">
+    Set **Business dataset name** to the mapping you want to join in. It must contain a column that can be joined to the cost datasets in scope — a tabular dataset that supplements cost data with extra columns of business context.
+  </Step>
+  <Step title="Handle duplicate rows">
+    Decide what happens if the business dataset has duplicate values in the join column: **Error** (stop the run and raise), **First** (keep the first occurrence), or **Last** (keep the last). Handling duplicates consistently is what prevents mismatched joins.
+  </Step>
+  <Step title="Define the join">
+    Under **Join columns**, add one or more pairs: a **Cost dataset join column** matched against a **Business dataset join column**. The two need not share a name, but must hold matching values and compatible types, and both must exist in every dataset the lookup applies to. Each side can be a static value, a column reference, or an expression.
+  </Step>
+  <Step title="Choose the columns to import">
+    Under **Columns to import**, list the business columns to pull onto matched cost rows. For each, set **Type** (FOCUS or Custom), **Name** (the column in the business dataset), and optionally **Rename to** — custom columns should carry the `x_` prefix, e.g. import `team` as `x_team`.
+  </Step>
+  <Step title="Set a default value (optional)">
+    Turn on **Enable default value** to write a value into cost rows that find no match. Leave it off and unmatched rows keep null in the imported columns.
+  </Step>
+  <Step title="Set the merge policy">
+    **Merge policy** decides how imported columns are written: **Add** (new column, fail if it exists), **Upsert** (fill only empty values), or **Overwrite** (replace all). See [merge behavior](/pipeline-overview#building-blocks-shared-across-stages).
+  </Step>
+</Steps>
+
+## Worked example — attach account ownership
+
+Join a cost dataset to an ownership mapping and import the ownership columns:
+
+- **Business dataset name:** `Account ownership data`
+- **Join columns:** cost `SubAccountId` → business `key`
+- **Columns to import:** `team` as `x_team`, `cost_center` as `x_cost_center`, `business_unit` as `x_business_unit`, `owner` as `x_owner`, `organization` as `x_organization`
+- **Handle duplicate rows:** Error
+
+Every cost row whose `SubAccountId` appears in the mapping now carries the imported `x_` columns — ready to report on and break down by owner.
+
+## Result & gotchas
+
+- Cost rows whose join value isn't in the business dataset find **no match** — they keep null (or the default value) in the imported columns and are treated as shared or untagged cost, handed to [Allocate](/attribution-and-allocation).
+- If the business dataset has duplicate join values and **Handle duplicate rows** is left on **Error**, the run stops — set First or Last to pick deterministically.
+- Join columns must have **compatible types** on both sides, even when their names differ.
+- **Merge policy: Add** fails if an imported column already exists — use Upsert or Overwrite to write into one.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Lookup sits among the Prepare and Enrich operators.
+  </Card>
+
+  <Card title="Attribution & allocation" icon="scale-balanced" href="/attribution-and-allocation">
+    How attribution and shared-cost distribution work end to end.
+  </Card>
+</CardGroup>

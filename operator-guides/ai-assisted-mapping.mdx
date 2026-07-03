@@ -1,0 +1,85 @@
+---
+title: "Normalize messy values with AI assisted mapping"
+sidebarTitle: "AI assisted mapping"
+description: "Train and apply a small mapping model from markdown instructions to collapse messy variants into canonical values."
+icon: "sparkles"
+---
+
+An **AI assisted mapping** operation trains and applies a small mapping model at pipeline-run time from a **markdown instructions file**, then uses it to collapse messy variants of a value into one canonical value. Use it to normalize inconsistent vendor names (`aws`, `AMZN`, `Amazon Web Services` → `Amazon`), region codes (`us-east-1`, `USE1` → `us-east`), or account aliases.
+
+The instructions can be a markdown **table of (source, expected) pairs**, plain-English **rules** ("anything starting with 'aws' maps to Amazon"), or both. At run time an LLM extracts the pairs from the markdown, a small model is trained on them, and its accuracy is checked before it's applied.
+
+**Availability: Enrich only.**
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure the mapping**. For **Merge policy**, see the [shared building blocks](/pipeline-overview#building-blocks-shared-across-stages).
+</Note>
+
+## Configure the mapping
+
+<Steps>
+  <Step title="Choose source and target columns">
+    Set **Column to normalize** (the source column to read raw values from) and **Output column name** (the target column to write the expected values to), along with its **Column type** — FOCUS or Custom (`x_`).
+  </Step>
+  <Step title="Point at the instructions">
+    Instructions come from either or both of:
+
+    - **Stitcher model** — enable and pick a curator-maintained model authored by StitcherAI's FinOps team (**Vendor mapping**, **Region mapping**, or **Service mapping**). The fastest way to start.
+    - **User additions (markdown path)** — a markdown file in your repo (conventionally under `data/assistant_context/…`) holding your own rules and pair examples.
+
+    Set both and your additions layer on top of the curated examples — the curated set is the foundation, your additions extend it.
+  </Step>
+  <Step title="Set the merge policy">
+    **Merge policy** decides how the predicted values combine with the existing dataset (defaults to **Add**). See [merge behavior](/pipeline-overview#building-blocks-shared-across-stages).
+  </Step>
+</Steps>
+
+## How it works at run time
+
+<Steps>
+  <Step title="Combine the instructions">
+    The executor concatenates the curated Stitcher-model markdown (if set) and your user-additions markdown (if set).
+  </Step>
+  <Step title="Extract the pairs">
+    An LLM extracts (source, expected) pairs from the combined markdown — both explicit table rows and rules written as prose.
+  </Step>
+  <Step title="Train and gate">
+    A small mapping model is trained on those pairs. Its test accuracy is checked against a minimum-accuracy gate; if the gate isn't met, the operation **fails fast**.
+  </Step>
+  <Step title="Apply">
+    Distinct, non-null values from the source column are batched through the model and the predictions written to the target column.
+  </Step>
+</Steps>
+
+## Recommended workflow
+
+The quickest path is the **AI assisted mapping chat workflow**: pick a close Stitcher model, add your own examples (paste them, upload a CSV, or describe the rule in prose), and **Save**. The assistant writes the markdown file and emits this operation's YAML pre-populated to point at it — commit both to your repo, and later runs apply the mapping automatically. Edit the markdown any time; the next run picks up the changes.
+
+## Worked example — normalize vendor names
+
+Given a `ProviderName` column with values like `aws`, `AMZN`, `Amazon Web Services`, `gcp`, and `google cloud`:
+
+- **Column to normalize:** `ProviderName`
+- **Output column name:** `x_expected_vendor` (Custom)
+- **Stitcher model:** Vendor mapping
+
+The variants collapse to `Amazon` and `Google` in `x_expected_vendor`.
+
+## Result & gotchas
+
+- **Enrich only.**
+- The model is **retrained on every run** from the current markdown — editing the instructions changes future runs with no redeploy.
+- The **accuracy gate** fails the operation fast if the trained model doesn't clear the minimum, so a weak instruction set surfaces immediately instead of silently mis-mapping.
+- Need deterministic, rule-based mapping instead of a model? Use [Mapping](/operator-guides/mapping); for an exact join against a table, use [Lookup](/operator-guides/lookup).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Mapping" icon="list-check" href="/operator-guides/mapping">
+    Deterministic, rule-based column derivation without a model.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where AI assisted mapping sits among the Enrich operators.
+  </Card>
+</CardGroup>

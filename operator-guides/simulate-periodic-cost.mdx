@@ -1,0 +1,63 @@
+---
+title: "Project upcoming cost with Simulate periodic cost"
+sidebarTitle: "Simulate periodic cost"
+description: "Project end-of-month, late-arriving, or periodic charges into the current period from a baseline."
+icon: "calendar-days"
+---
+
+A **Simulate periodic cost** operation projects costs that would otherwise appear late — end-of-month support charges, PDF invoices that arrive after the billing period closes, or quarterly/annual charges billed as a one-time spike — into the current period, so dashboards and forecasts aren't skewed while the real charge is still missing.
+
+**Availability: Enrich only.** It requires FOCUS-normalized columns, so unlike most operators it cannot run in Prepare.
+
+<Note>
+  Choosing the operation (Step 1) and defining [scope](/pipeline-overview#building-blocks-shared-across-stages) (Step 2) are identical across every operator. This guide covers only **Step 3: Configure the cost simulation**. The **Cost filters** use the shared [Simple vs SQL condition](/pipeline-overview#building-blocks-shared-across-stages) mechanics. This operation adds simulated rows rather than writing a column, so it has **no merge policy**.
+</Note>
+
+## Configure the simulation
+
+<Steps>
+  <Step title="Name and describe the operation">
+    Set **Operation name** and a required **Operation description**. The description doesn't appear in the output dataset, but keeps context for change management and auditing.
+  </Step>
+  <Step title="Choose the simulation source">
+    **Simulation source** is the baseline reference period:
+
+    - **Previous month** — scale from the most recently completed billing month.
+    - **Historical average** — scale from the average cost across all available billing months.
+  </Step>
+  <Step title="Set the projection">
+    **Simulation method** is **Fixed**: multiply the baseline by an **Adjustment factor** — `1.0` = same as the baseline, `1.1` = \+10%, `0.9` = −10%.
+  </Step>
+  <Step title="Restrict the baseline (optional)">
+    Under **Cost filters**, add [conditions](/pipeline-overview#building-blocks-shared-across-stages) (Simple or SQL) to restrict which rows from the reference period form the baseline — for example only rows where `ServiceName` equals `Support`.
+  </Step>
+</Steps>
+
+## Worked example — carry end-of-month support forward
+
+Simulate end-of-month support charges at the same level as last month:
+
+- **Simulation source:** Previous month
+- **Simulation method:** Fixed · **Adjustment factor:** `1.0`
+- **Cost filters:** `ServiceName` equals `Support`
+
+Support cost now appears throughout the month instead of landing as a single end-of-month line item.
+
+## Result & gotchas
+
+- **Enrich only** — the operation needs FOCUS-normalized columns and won't run in Prepare.
+- The **Adjustment factor** scales the whole baseline: `1.0` keeps it flat, values above or below 1 raise or lower it.
+- **Cost filters** shape the baseline, not the output — they pick which reference-period rows to project forward.
+- **Operation description is required** here, unlike most operators.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Forecasting" icon="chart-line" href="/forecasting">
+    Project future cost and model planned events.
+  </Card>
+
+  <Card title="Model — the operator catalog" icon="diagram-project" href="/model">
+    Where Simulate periodic cost sits among the Enrich operators.
+  </Card>
+</CardGroup>
