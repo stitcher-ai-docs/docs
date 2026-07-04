@@ -1,0 +1,81 @@
+---
+title: "Events"
+description: "Define named business events that feed forecasts — explainable with vs without events, comparable as what-if scenarios, and sharpened with business-driver signals."
+---
+
+**Events** define named **event banks** — collections of described business changes and what-ifs (a launch, a migration, a contract change, a past anomaly) that **feed forecasts**. Toggling an event bank on or off lets you compare what-if scenarios side by side.
+
+A forecast is a [generated artifact](/build/generate-artifacts) built on an **Indicator**. You start from a KPI you already track — cost by team, cost per inference, a margin — and the forecast projects that same metric into the future. Anything you can measure, you can forecast.
+
+## Business-driver and event-driven
+
+A StitcherAI forecast reflects what the business is about to do, not just where the line has been. Instead of extrapolating a trend, it incorporates **events**:
+
+<CardGroup cols={2}>
+  <Card title="Known future changes" icon="calendar-plus">
+    Launches, migrations, contract changes — what-ifs you already know are coming.
+  </Card>
+
+  <Card title="Past anomalies" icon="triangle-exclamation">
+    A one-off spike you don't want repeated in the projection.
+  </Card>
+</CardGroup>
+
+<Note>
+  Events are organized into named **event banks** — a collection of events you can switch on or off as a set. Each event is **authored in plain, natural language**: you describe the change in words, and StitcherAI accounts for it in the forecast.
+</Note>
+
+## Explainable
+
+Because the inputs are named, described business events, a forecast explains itself. It's shown **with vs without its events** — two lines, so you can see exactly what the events moved — alongside a plain-language **impact summary** of what changed and why.
+
+> 🖼 **Figure:** A forecast shown with vs without business events, plus an impact summary. _(image: forecast-with-without-events)_
+
+A forecast is explained by business reality, not opaque math.
+
+## What-if scenarios
+
+<Steps>
+  <Step title="Toggle an event bank">
+    Switch a bank on or off — _with the migration_ versus _without_, _with the launch_ versus _without_.
+  </Step>
+  <Step title="Compare the projections">
+    Watch the forecast respond, and compare the futures side by side.
+  </Step>
+</Steps>
+
+What-if analysis is simply toggling which events apply.
+
+## Improving accuracy
+
+Beyond cost history, a forecast can draw on correlated signals:
+
+<CardGroup cols={2}>
+  <Card title="Business-driver signals" icon="chart-mixed">
+    Headcount, customer count, transaction volume — series that move with cost.
+  </Card>
+
+  <Card title="Calendar events" icon="calendar-days">
+    Public holidays, fiscal year-end, and other recurring dates.
+  </Card>
+</CardGroup>
+
+These supplementary signals help a forecast track patterns that cost data alone wouldn't reveal.
+
+## What's still maturing
+
+<Info>
+  Some capabilities are in active development, and we'd rather be plain about it: the depth of **customer-authored event logic** (events are authored in natural language today), surfacing which **business-driver signals matter most**, and **confidence bands** on the projection. The forecasting capability continues to deepen.
+</Info>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Govern" icon="shield-check" href="/build/govern">
+    Evaluate your KPIs and forecasts against policy, and alert owners before the bill-shock.
+  </Card>
+
+  <Card title="Generate artifacts" icon="cubes" href="/build/generate-artifacts">
+    Back to the Indicator a forecast is built on.
+  </Card>
+</CardGroup>

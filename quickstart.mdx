@@ -3,45 +3,73 @@ title: "Quickstart"
 description: "Begin with a guide on the fastest path to a successful outcome"
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+Before you can do anything else in StitcherAI, you need access to two surfaces: the **web app**, where you manage connections, runs, and schedules, and the **authoring environment**, where you build the cost model itself. Both use the same identity, but each has its own one-time setup.
 
 ## Prerequisites
 
-Before you begin, you must have:
+- Access to the relevant [environment](/access-and-administration) — provisioned by StitcherAI and based on your organization's identity provider
+- GitHub access to your pipeline configuration repo — see [Access & administration](/access-and-administration)
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+## Access the web app
 
-## Get started
+The web app at [**app.stitcher.ai**](https://app.stitcher.ai) is where you manage environments, data connections, runs, schedules, tags, and assistant sessions.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Sign in with your identity provider">
+    StitcherAI uses **single sign-on (OpenID Connect)** — there's no separate StitcherAI password to create. Sign in with the same corporate identity your organization already uses.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
-    ```bash
-    your-cli init
-    ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
-
-    ```bash
-    your-cli start
-    ```
+  <Step title="Confirm your environment">
+    Once signed in, you land in the [environment](/access-and-administration) your role grants you access to. If you work across more than one environment, you can switch between the ones you have access to from within the app.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+<Note>
+  This is the **same identity** you'll use to log in to the authoring environment below — signing in once with your provider is what unlocks both surfaces.
+</Note>
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+## Set up the authoring environment
+
+Before you can build your cost model in the editor, set up the authoring environment: install the extension, open your pipeline configuration repo, and log in.
+
+### Set up the environment
+
+<Steps>
+  <Step title="Install VS Code and the StitcherAI extension">
+    Download and install [VS Code](https://code.visualstudio.com), then install the [StitcherAI extension](https://marketplace.visualstudio.com/items?itemName=StitcherAIInc.stitcherai-editor) from the marketplace.
+  </Step>
+  <Step title="Clone your pipeline configuration repo">
+    Clone your pipeline configuration repo to your machine:
+
+    ```bash
+    git clone <your-pipeline-repo-url>
+    ```
+  </Step>
+  <Step title="Open that repo in VS Code">
+    Use **File → Open Folder** and select the folder you just cloned.
+  </Step>
+  <Step title="Log into the StitcherAI extension">
+    With the repo open, click **log in** in the StitcherAI extension. A new browser tab opens — sign in with the same identity you use for the web app. Confirming there completes the login and hands control back to VS Code.
+  </Step>
+</Steps>
+
+<Note>
+  Log in only **after** opening your pipeline configuration repo. The extension needs that project context to complete the login loop — logging in first, or with the wrong folder open, means the browser confirmation won't connect back to VS Code.
+</Note>
+
+### Verify it worked
+
+Once logged in, you should see the StitcherAI panel active in the activity bar, the schema browser populated with your data, and the AI chat panel and start-page prompts available.
+
+If you don't see these, confirm your pipeline configuration repo is still the open folder, then log out and back in.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="How to: Bring in a dataset" icon="database" href="/how-to/bring-in-a-dataset">
+    Connect your first cost or business data source.
+  </Card>
+
+  <Card title="How a pipeline is composed" icon="diagram-project" href="/pipeline-overview">
+    The four phases you'll build, and how configurations are authored — visually, by AI chat, or directly.
+  </Card>
+</CardGroup>

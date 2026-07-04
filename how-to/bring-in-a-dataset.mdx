@@ -1,0 +1,66 @@
+---
+title: "How to: Bring in a dataset"
+description: "Connect a cost or business data source so StitcherAI has data to model — the prerequisite for enriching, allocating, or building anything else."
+---
+
+## What this does, and why
+
+Everything downstream — normalizing to FOCUS, attributing cost, allocating shared cost, building artifacts — needs a dataset to work on. Bringing in a dataset means defining **where StitcherAI reads it from** (a base data connection) and **what it is** (a data source configured in Connect). Once a source is connected, it flows automatically into [Model](/model/prepare) on every run.
+
+<Note>
+  This guide covers connecting a source once. For the full catalog of what can be connected — cloud billing, warehouses, SaaS and usage APIs, files, and PDFs — see [the data foundation](/data-foundation).
+</Note>
+
+## Prerequisites
+
+- Your [authoring environment set up](/quickstart) — you'll configure the source in your pipeline configuration repo
+- Access to enter credentials in the web app (an environment-scoped role — see [Access & administration](/access-and-administration))
+- The connection details for the system you're bringing in (a storage path, a warehouse, or a provider API key)
+
+## Set up the connection — in the web app
+
+Everything below happens in the web app, before you ever open the authoring environment.
+
+<Steps>
+  <Step title="Provision provider access">
+    Create the least-privilege access the provider needs — a role, service account, or API key. StitcherAI publishes ready-made, per-provider infrastructure so you don't have to assemble permissions by hand — see [Connections & credentials](/connections-and-credentials#per-provider-setup-ready-to-use).
+  </Step>
+  <Step title="Select the data source">
+    Start a new connection and select the **data source** — the provider and dataset you're connecting, for example "AWS Cost & Usage Report" or "OpenAI usage."
+  </Step>
+  <Step title="Select the connector">
+    Choose the **connector** StitcherAI should use to reach it — file/blob storage, a database, or the provider's API — matching the access you provisioned in step 1.
+  </Step>
+  <Step title="Configure the connector">
+    Fill in the fields the connector needs to locate your data — for example a **bucket or storage account name**, **region**, **path**, and a **role or ARN** for cloud storage. The exact fields vary by connector.
+  </Step>
+  <Step title="Name and save the connection">
+    Give the connection a name and save it. StitcherAI validates it immediately — confirming it can actually read (or, for a destination, write) the data — before it's usable. See [Connections & credentials](/connections-and-credentials#define-and-validate-a-connection).
+  </Step>
+</Steps>
+
+<Tip>
+  **Provider not in the list?** Select **custom cost dataset** instead of a named provider in step 2, then select and configure the connector the same way — the connector and configuration steps are identical whether the dataset is a listed provider or a custom one.
+</Tip>
+
+## Add the source — in the authoring environment
+
+With the connection saved and named, reference it from your pipeline configuration.
+
+<Steps>
+  <Step title="Craft a data source from the connection">
+    In the authoring environment, add a data source under **Connect** and point it at your connection **by name**. Choose the dataset — a cost dataset (cloud, SaaS, AI, vendor invoice) or a business dataset (ownership, headcount, budgets) — and its options.
+  </Step>
+</Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="How to: Attribute cost" icon="user-tag" href="/how-to/attribute-cost">
+    Assign the newly connected cost to the owners responsible for it.
+  </Card>
+
+  <Card title="Model" icon="diagram-project" href="/model">
+    Where a connected source goes next — Prepare, Normalize, Enrich, Allocate.
+  </Card>
+</CardGroup>

@@ -1,0 +1,31 @@
+---
+title: "Normalize"
+description: "Map every source into the FOCUS schema, so cost from any provider ends up directly comparable."
+---
+
+Normalize converts each source's raw data into the FOCUS schema, so cost from any provider ends up in the **same columns** and is directly comparable.
+
+<Tabs>
+  <Tab title="Supported providers">
+    Known cloud and SaaS sources normalize **automatically**, with no configuration — including AWS, Azure, Google Cloud, OCI, IBM, and Databricks. StitcherAI's built-in converters map them into FOCUS for you.
+  </Tab>
+  <Tab title="Custom & unstructured">
+    Custom files and unstructured sources (such as PDF invoices) get an **assisted mapping**: StitcherAI's AI proposes the raw → FOCUS mapping, you preview it in the authoring environment, and you refine it before saving. See [AI-powered ingestion](/ai-ingestion) for how this works.
+  </Tab>
+</Tabs>
+
+<Note>
+  FOCUS has a **guaranteed** core (always populated) and **best-effort** columns (populated to the extent the source supports). StitcherAI does not manufacture definition that isn't in the source data. See [FOCUS](/focus) for the column model.
+</Note>
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Enrich" icon="sparkles" href="/model/enrich">
+    Attach business context on top of FOCUS columns — where attribution mostly happens.
+  </Card>
+
+  <Card title="Prepare" icon="broom" href="/model/prepare">
+    Back to cleaning raw columns before normalization.
+  </Card>
+</CardGroup>

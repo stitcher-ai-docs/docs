@@ -1,0 +1,76 @@
+---
+title: "Generate artifacts"
+description: "Build specialized outputs on the cost model — Indicators/KPIs, derived datasets, and forecasts — selected by artifact group and name, chainable, and regenerated live."
+---
+
+Once your cost model is normalized, attributed, and allocated, **Generate** transforms and runs calculations on the primary cost dataset and on other artifacts to produce new, specialized **artifacts**. It also **aggregates** detailed cost — sum, average, percentiles, distinct count, and more — to roll it up into those artifacts.
+
+<Note>
+  Every artifact has a **group** and a **name** you assign when you create it. That group and name are the handle you use everywhere afterward — to build another artifact from it, to [govern](/build/govern) it, or to [deliver](/engage) it.
+</Note>
+
+## Artifact types
+
+<CardGroup cols={2}>
+  <Card title="Indicator / KPI" icon="chart-line">
+    A single cost metric tracked over time at a granularity and grouping you choose — effective cost by team per month, or a unit-economics measure like cost per active user. Optionally linked to a budget.
+  </Card>
+
+  <Card title="Derived dataset" icon="table">
+    A custom view or report built with SQL over the cost model and other artifacts — a chargeback report, margin by feature, or cost per tenant.
+  </Card>
+
+  <Card title="Commitment-coverage report" icon="file-contract">
+    Reserved-instance and savings-plan coverage and utilization.
+  </Card>
+
+  <Card title="Forecast" icon="wand-magic-sparkles" href="/build/events">
+    A projection built on an Indicator, driven by named business events. A forecast is itself a generated artifact — see Events.
+  </Card>
+</CardGroup>
+
+### Indicators in depth
+
+An Indicator rolls detailed cost up with an **aggregation** — sum, average, a percentile, distinct count, and so on — at the **granularity** you choose (daily, weekly, monthly, quarterly, yearly) and the **grouping** you choose (by team, by service, by tenant).
+
+<Tip>
+  **Unit economics are just Indicators** whose metric is cost divided by a business quantity — cost per inference, per feature, per tenant. That's what lets you [govern a unit-economics KPI against a threshold](/build/govern) and what makes [AI unit economics](/managing-ai-spend) possible.
+</Tip>
+
+You can optionally link an Indicator to a **budget**. This combines the Indicator with budget figures so you can track **budget versus actual** and the variance between them.
+
+## Artifacts can be chained
+
+An artifact's input can be the primary cost dataset, or another artifact you already generated. You **select that input by its artifact group and name** — the same selection model used by governance and delivery.
+
+> 🖼 **Figure:** Artifacts can be chained: primary cost → aggregated view → KPI → forecast. _(image: artifact-chain)_
+
+So artifacts compose: primary cost becomes an aggregated view, which becomes a KPI, which becomes a forecast. A complex output is assembled from simpler, reusable pieces rather than written as one monolithic query. A chargeback is a separate kind of artifact — a derived dataset built straight from the model, not a step downstream of a KPI.
+
+<Warning>
+  Aggregations over large datasets can be expensive. Where the same heavy aggregation feeds several outputs, **do it once as a single artifact, then build the subsequent artifacts from that aggregated result** — instead of re-scanning the full cost data each time. This can materially improve how a pipeline performs.
+</Warning>
+
+## Example: a chargeback report
+
+A chargeback is a familiar generated artifact — a **derived dataset / report** that attributes cost to cost centers or teams. Unlike a KPI, which carries a **single cost metric**, a chargeback can carry **both cash and accrual components** in the same report. It's a concrete example of chaining and selection working together.
+
+## Generating is not delivering
+
+<Info>
+  **Pushing an artifact out** — handing a chargeback to an ERP, for instance — happens in the [Engage](/engage) phase, to a **custom location**. It is _not_ part of generating the artifact. Generate makes the artifact; Engage delivers it.
+</Info>
+
+And because artifacts are computed from the model rather than assembled by hand, they **regenerate live** as new data flows in — every run reflects the latest cost data.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Govern" icon="shield-check" href="/build/govern">
+    Evaluate this artifact against configurable controls, and route breaches to an alert.
+  </Card>
+
+  <Card title="Events" icon="calendar-plus" href="/build/events">
+    Build a forecast on a KPI — driven by named business events and able to explain itself.
+  </Card>
+</CardGroup>

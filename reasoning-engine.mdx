@@ -25,7 +25,7 @@ The Reasoning Engine is the always-present layer of IT-Finance agents that acts 
   </Card>
 
   <Card title="Custom-cost agent" icon="file-import">
-    Onboards arbitrary invoices and datasets into the FOCUS model — see [AI-powered ingestion](/focus).
+    Onboards arbitrary invoices and datasets into the FOCUS model — see [AI-powered ingestion](/ai-ingestion).
   </Card>
 </CardGroup>
 
@@ -61,6 +61,16 @@ You set StitcherAI as the **IT-Finance expert** in your AI platform, so spend-im
   The agents run under your credentials and policies; StitcherAI does not bypass your authentication, authorization, or audit. The full trust-boundary model is covered in [Security](/security).
 </Warning>
 
+## Under the hood: MCP
+
+The Reasoning Engine exposes itself as an **MCP (Model Context Protocol) server** — the open standard for connecting AI applications to external tools and data. Any MCP-compatible client can attach to it directly, which is what makes "reachable inside your own AI platforms" a protocol-level fact rather than a set of one-off integrations built and maintained per tool.
+
+Once connected, an AI platform gets a typed catalog of capabilities to call: querying the cost model directly (with guardrails such as dry-run confirmation before a large scan), running what-if simulations, managing data connections, and orchestrating the coordination, planning, and custom-cost agents described above. Each capability declares its own cost profile, so a lightweight lookup and a heavyweight simulation are governed — and rate-limited — differently rather than treated the same.
+
+<Info>
+  Because MCP is the transport, adding StitcherAI to a new AI platform is a matter of pointing an MCP-compatible client at the server — not building a bespoke integration for every tool your teams use.
+</Info>
+
 ## Orchestrating across your systems
 
 The agents orchestrate multi-step workflows that span your systems — ERPs, ITSM, procurement, observability, and BI. The work is a sequence of actions across those tools, gated by you where it matters, not a single lookup.
@@ -75,13 +85,11 @@ The agents orchestrate multi-step workflows that span your systems — ERPs, ITS
   </Accordion>
 
   <Accordion title="Generate and submit a chargeback">
-    Build a chargeback [artifact](/generating-artifacts) and submit it onward to an ERP — generation and delivery driven end to end.
+    Build a chargeback [artifact](/build/generate-artifacts) and submit it onward to an ERP — generation and delivery driven end to end.
   </Accordion>
 </AccordionGroup>
 
-<Frame caption="An IT-Finance agent in your AI tool: a plan, live cost context, and a paired critic's review">
-  ![An IT-Finance agent in your AI tool: a plan, live cost context, and a paired critic's review](/images/fig-15-reasoning-engine-in-workflow.png)
-</Frame>
+> 🖼 **Figure:** An IT-Finance agent in your AI tool: a plan, live cost context, and a paired critic's review. _(image: reasoning-engine-in-workflow)_
 
 <CardGroup cols={2}>
   <Card title="The two engines" icon="gears" href="/architecture-two-engines">

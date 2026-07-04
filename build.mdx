@@ -3,57 +3,30 @@ title: "Build"
 description: "Turn the modeled cost into the outputs your organization runs on — Generate artifacts, Govern them against controls, and define forecast Events."
 ---
 
-**Build** turns the FOCUS-normalized, attributed cost model into the outputs your organization actually runs on. It has three parts — **Generate**, **Govern**, and **Event** — each with a dedicated page for the depth.
+**Build** turns the FOCUS-normalized, attributed cost model into the outputs your organization actually runs on. It has three parts:
 
 <CardGroup cols={3}>
-  <Card title="Generate" icon="cubes" href="/generating-artifacts">
-    Produce artifacts from the model.
+  <Card title="Generate artifacts" icon="cubes" href="/build/generate-artifacts">
+    Produce KPIs, derived datasets, and forecasts from the model.
   </Card>
 
-  <Card title="Govern" icon="shield-check" href="/cost-governance">
-    Evaluate artifacts against controls.
+  <Card title="Govern" icon="shield-check" href="/build/govern">
+    Evaluate artifacts against controls and route breaches to an alert.
   </Card>
 
-  <Card title="Event" icon="calendar-plus" href="/forecasting">
-    Define the events that feed forecasts.
+  <Card title="Events" icon="calendar-plus" href="/build/events">
+    Define the named business events that feed forecasts.
   </Card>
 </CardGroup>
 
-## Generate — produce artifacts
-
-**Generate** transforms and runs calculations on the primary cost dataset and on other artifacts to produce new, specialized **artifacts**. It also **aggregates** detailed cost — sum, average, percentiles, distinct count, and more — to roll it up into those artifacts.
-
-The artifact types you can generate:
-
-- **Indicators / KPIs** — a metric tracked over time at a chosen granularity and grouping, optionally linked to a budget for budget-vs-actual variance.
-- **Derived datasets** — a custom view built with a query over the cost model and other artifacts (chargeback tables, margin by feature, cost per tenant).
-- **Commitment-coverage reports** — reserved-instance and savings-plan coverage and utilization.
-- **Forecasts** — projections built on an indicator (see Event, below, and [Forecasting](/forecasting)).
-
-Artifacts can be **chained** — built from the primary cost dataset or from other artifacts — and each carries a **group** and a **name** you assign, which you use to select it downstream.
-
-<Card title="Generating artifacts" icon="cubes" href="/generating-artifacts">
-  The full artifact catalog, chaining artifacts, and performance guidance.
-</Card>
-
-## Govern — evaluate against controls
-
-**Govern** evaluates the artifacts produced earlier against configurable **controls** and produces **control artifacts** that report pass or fail. You select the artifact to govern by its **group and name** — the same selection model used when chaining artifacts — and a breach raises an **alert** routed to the right owner.
-
-<Card title="Cost governance" icon="shield-check" href="/cost-governance">
-  Row-level and aggregate-level controls, conditions, and how a breach becomes an alert before the bill-shock.
-</Card>
-
-## Event — define forecast scenarios
-
-**Event** defines named **event banks** — collections of described business changes and what-ifs (a launch, a migration, a contract change, a past anomaly) that **feed forecasts**. Toggling an event bank on or off lets you compare what-if scenarios side by side.
-
-<Card title="Forecasting" icon="chart-line" href="/forecasting">
-  Business-driver, event-driven forecasts that explain themselves — shown with and without events.
-</Card>
-
 ## Next
 
-<Card title="Engage" icon="share-nodes" href="/engage">
-  Deliver these artifacts to your warehouse, storage, and other systems.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Engage" icon="share-nodes" href="/engage">
+    Deliver these artifacts to your warehouse, storage, and other systems.
+  </Card>
+
+  <Card title="Model" icon="diagram-project" href="/model">
+    Back to shaping and attributing the data that Build works from.
+  </Card>
+</CardGroup>
