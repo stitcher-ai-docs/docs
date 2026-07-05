@@ -57,15 +57,13 @@ A debug run writes to a **debug destination** rather than production, and **noti
 
 Open a run on the **run details page** to watch it live.
 
-<Frame caption="The run details page: per-stage progress and failure logs">
-  ![The run details page: per-stage progress and failure logs](/images/fig-16-run-details.png)
-</Frame>
+> 🖼 **Figure:** The run details page: per-stage progress and failure logs. _(image: run-details)_
 
 <Note>
   A pipeline runs **one run at a time**. Runs can be **named** — so a backfill is easy to find later — and **cancelled** from the run details page if you need to stop one.
 </Note>
 
-The page shows **per-stage and per-step progress**: which stage is running, which steps have completed, and which is in flight. (For what each stage does, see [The semantic pipeline](/pipeline-overview).)
+The page shows **per-stage and per-step progress**: which stage is running, which steps have completed, and which is in flight. (For what each stage does, see [How a pipeline is composed](/pipeline-overview).)
 
 ## Diagnosing a failure
 
@@ -97,11 +95,11 @@ When a step fails, the run details page is also where you fix it.
     The branch a debug run targets, and the author → debug → review loop.
   </Card>
 
-  <Card title="Cost governance" icon="shield-check" href="/cost-governance">
+  <Card title="Govern" icon="shield-check" href="/build/govern">
     What gets evaluated, and the alerts a standard run fires.
   </Card>
 
-  <Card title="The semantic pipeline" icon="diagram-project" href="/pipeline-overview">
+  <Card title="How a pipeline is composed" icon="diagram-project" href="/pipeline-overview">
     The stages a run executes, Connect through Engage.
   </Card>
 </CardGroup>

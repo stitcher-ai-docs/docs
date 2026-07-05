@@ -11,21 +11,30 @@
   "navigation": {
     "groups": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart",
-          "how-to/set-up-authoring-environment"
-        ]
-      },
-      {
         "group": "Overview",
         "pages": [
           "introduction",
           "use-cases",
           "what-makes-stitcherai-different",
-          "architecture-two-engines",
-          "access-and-administration"
+          "architecture-two-engines"
+        ]
+      },
+      {
+        "group": "Getting Started",
+        "pages": [
+          "quickstart",
+          "how-to/bring-in-a-dataset",
+          "how-to/attribute-cost",
+          "how-to/build-an-allocation",
+          "how-to/generate-an-artifact",
+          "how-to/execute-a-pipeline"
+        ]
+      },
+      {
+        "group": "Security & Access",
+        "pages": [
+          "access-and-administration",
+          "security"
         ]
       },
       {
@@ -42,18 +51,26 @@
         "pages": [
           "pipeline-overview",
           "connect",
-          "model",
-          "build",
+          {
+            "group": "Model",
+            "pages": [
+              "model",
+              "model/prepare",
+              "model/normalize",
+              "model/enrich",
+              "model/allocate"
+            ]
+          },
+          {
+            "group": "Build",
+            "pages": [
+              "build",
+              "build/generate-artifacts",
+              "build/govern",
+              "build/events"
+            ]
+          },
           "engage"
-        ]
-      },
-      {
-        "group": "Attribution, artifacts & governance",
-        "pages": [
-          "attribution-and-allocation",
-          "generating-artifacts",
-          "forecasting",
-          "cost-governance"
         ]
       },
       {
@@ -67,7 +84,6 @@
         "group": "Operating StitcherAI",
         "pages": [
           "running-and-monitoring",
-          "security",
           "authoring-and-version-control"
         ]
       }

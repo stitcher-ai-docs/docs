@@ -16,9 +16,7 @@ This page sets out StitcherAI's trust boundaries: how environments are isolated,
   </Step>
 </Steps>
 
-<Frame caption="Organization → Environment → Pipeline — the environment is the isolation boundary">
-  ![Organization → Environment → Pipeline — the environment is the isolation boundary](/images/fig-04-org-environment-pipeline.png)
-</Frame>
+> 🖼 **Figure:** Organization → Environment → Pipeline — the environment is the isolation boundary. _(image: org-environment-pipeline)_
 
 <Note>
   Isolation is the **default**, not a setting you turn on. Credentials for [data connections](/connections-and-credentials) are **environment-scoped** — they belong to the environment that uses them and don't span the organization. Identity and environment-scoped roles are covered in [Access & administration](/access-and-administration).
@@ -76,7 +74,7 @@ The practical consequence: the access controls you already run — environment-s
 
 <CardGroup cols={2}>
   <Card title="Access & administration" icon="key" href="/access-and-administration">
-    Tenancy, single sign-on, environment-scoped roles, and GitHub access.
+    Tenancy, account access, environment-scoped roles, and GitHub access.
   </Card>
 
   <Card title="Reasoning engine" icon="robot" href="/reasoning-engine">

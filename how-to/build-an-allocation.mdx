@@ -1,0 +1,129 @@
+---
+title: "How to: Build an allocation"
+description: "Author an Allocate rule to distribute shared, central, and untagged cost to the teams that consumed it."
+---
+
+## What this does, and why
+
+[**Allocate**](/model/allocate) is the last Model sub-stage. [Attribution](/how-to/attribute-cost) — Lookup and Mapping, during [Enrich](/model/enrich) — assigns cost to an owner wherever it can. What's left over is **shared, central, or untagged cost**: a Kubernetes platform, an API gateway, an enterprise license billed centrally but used by many teams. Allocation is what distributes that remainder to the teams that actually consumed it.
+
+Every allocation is balanced by **double-entry accounting**: a negation reduces the source cost by exactly the amount being moved, and one or more entries distribute that amount to recipients. The two net to zero, so the dataset's totals always reconcile to the bill — nothing is invented or lost, cost is only moved. For the concepts behind this — double-entry, multi-level chains, and traceability — see [Allocate](/model/allocate). This guide is the hands-on companion: authoring one allocation rule.
+
+<Note>
+  This assumes you already have cost data in your model. If you haven't connected a source yet, see [How to: Bring in a dataset](/how-to/bring-in-a-dataset) first.
+</Note>
+
+<Tip>
+  Run [attribution](/how-to/attribute-cost) before allocating, if you haven't already. It's not a hard requirement — allocation happily distributes whatever reaches it — but attributing first means only the cost that genuinely has no single owner ends up here, instead of cost a Lookup or Mapping could have assigned directly.
+</Tip>
+
+Each rule belongs to one of three **levels**, which sets the boundary within which its ratios and totals are computed. Rules run in the **order you set them** — top-down — so a multi-level chain executes from the top.
+
+## Choose the level
+
+<CardGroup cols={3}>
+  <Card title="Billing account" icon="file-invoice">
+    Runs independently within each billing account; ratios and totals use only that account's data.
+  </Card>
+
+  <Card title="Provider" icon="cloud">
+    Runs across all of one provider's accounts together — use when the source cost or its consumers span multiple accounts of the same provider.
+  </Card>
+
+  <Card title="Cross-provider" icon="globe">
+    Runs across providers together, for cost shared across the whole estate.
+  </Card>
+</CardGroup>
+
+## Build the rule
+
+The editor walks six tabs: **General configuration → Define the Scope → What cost to allocate → How to distribute the cost → Negation config → Add business context to allocation rows**.
+
+<Steps>
+  <Step title="General configuration">
+    **Name and version the rule** — the **Allocation rule name** and **Allocation rule version** (both required) are stamped onto the source rows, the generated negation rows, and the new allocation rows, so every affected row is traceable back to the rule that moved it.
+
+    **Handle missing distribution data** — **Error** fails the run when distribution data is missing for any period that has allocable cost; **Skip** leaves that cost at the source instead, useful while a dynamic strategy's data can arrive late (but if it never arrives, the run still succeeds silently, so the cost is never moved).
+
+    **Set the granularity** — **Monthly** computes over the full month (stable amounts, fewest rows; optionally spread across days without changing the total); **Daily** computes per day, tracking daily usage at roughly 30× the row volume. Starting with Monthly \+ daily spread gives stable amounts while still supporting day-range reporting and forecasting.
+  </Step>
+  <Step title="Define the scope">
+    Turn on **Enable scope for this allocation rule**, then set **Scope type** (Include or Exclude) and **Scope entries** (providers and data sources) — the same [scope model](/pipeline-overview#building-blocks-shared-across-stages) the operators use.
+  </Step>
+  <Step title="What cost to allocate">
+    **Cost selection filters** are [conditions](/pipeline-overview#building-blocks-shared-across-stages) that ring-fence the rows this rule allocates — for example `ServiceName` equals `Shared Kubernetes`. A row a previous rule already allocated is automatically excluded, but the allocation rows a rule _produces_ can be selected and re-allocated by a later rule — this is what makes multi-level chains work.
+
+    **Grouping columns** (optional) keep only the listed columns plus cost metrics on the allocation rows, aggregating the source rows first so each recipient sees one summary row instead of every source record. Leave empty to carry all source rows at full detail.
+  </Step>
+  <Step title="How to distribute the cost">
+    Pick a **strategy**, then a distribution source under **Distribute based on**:
+
+    | Strategy | What it does | Distribute based on |
+    | --- | --- | --- |
+    | **Fixed** | Explicit ratios you already know. | Inline table · Business dataset |
+    | **N-way** | Splits equally across recipients. | Inline table · Cost data · Business dataset |
+    | **Proportionate** | Splits by a driver metric. | Cost data · Business dataset |
+    | **Replace** | Swaps coarse cost for finer-grained cost from another dataset, to avoid double-counting. | Merge allocated cost |
+
+    For **Fixed, N-way, and Proportionate**, recipients come from one of three places: an **inline table** you type (ratios for Fixed must sum to `1.0`); the **cost data** itself, where Proportionate requires a numeric **metric column** (`recipient_metric / sum(all_recipients_metric)`); or a **business dataset**, reading a ratio column (and, for daily granularity, a date column) from an external source that's updated independently of the rule.
+
+    **Replace** is different: it swaps coarse cost for finer-grained cost from a second dataset. Point it at a **source cost dataset** and a **replacement cost dataset**, set the **mismatch actions** for when the two totals don't line up (error, or negate proportionally / negate all), and pair rows with **negation match columns** (each entry maps a source column or expression to a replacement one). Optional **negation import columns** can further split each negation row by a replacement-dataset column.
+  </Step>
+  <Step title="Negation config">
+    Negation rows are generated automatically for every rule so the allocation and its negation net to zero — this tab controls their **shape**, not whether they're created. Choose a **negation type** (Standard FOCUS, Customized FOCUS, or User defined) and a **negation granularity** (same as source, daily, or monthly).
+  </Step>
+  <Step title="Add business context to allocation rows">
+    Add **columns to override** to stamp extra context (department, cost center, tags) onto the allocation rows — each entry is a name (typically `x_`-prefixed) and a value. For anything needing conditional logic, do it upstream in Model with Lookup or Mapping instead.
+  </Step>
+</Steps>
+
+## Worked example — split a shared API gateway by usage
+
+Distribute a \$1,000 shared API gateway across teams by each team's own compute `BilledCost`:
+
+- **General:** name `api-gateway-proportionate`, version `2025.01`, granularity Monthly \+ daily spread.
+- **Scope:** Include, no entries (all providers).
+- **What cost to allocate:** `ServiceName` equals `Shared API gateway`; group by `x_Department`.
+- **How to distribute:** Strategy **Proportionate**, based on **Cost data**, metric column `BilledCost`.
+
+Engineering ($5,000 metric), Product ($3,000), and Data ($2,000) receive 50% / 30% / 20% — $500 / $300 / $200 — and a balancing negation reduces the gateway's central cost by \$1,000, so the total is unchanged.
+
+Here's why each tab looks the way it does for this example:
+
+**General configuration** — you're naming and calibrating the rule before touching any cost logic. **Handle missing distribution data** is set to Error, since this rule runs monthly and you want to know immediately if a team's usage numbers are late, rather than silently leaving \$1,000 unallocated. Granularity is Monthly \+ daily spread — the ratios are computed once a month (stable), but the resulting rows are spread across days so daily reports still show a smooth number.
+
+**Define the scope** — the gateway cost isn't tied to one cloud bill in particular, so scope is Include with no entries: the rule applies everywhere.
+
+**What cost to allocate** — the `ServiceName equals "Shared API gateway"` filter ring-fences exactly the rows that are this cost and nothing else. Grouping by `x_Department` means the rule reasons about one summarized row per team instead of hundreds of individual line items.
+
+**How to distribute the cost** — Proportionate is chosen because the split should be driven by a real usage signal rather than a fixed guess. Cost data is the distribution source, since each team's own `BilledCost` is already sitting in the model; setting it as the metric column is what turns $5,000 / $3,000 / $2,000 into the 50 / 30 / 20 weights applied to the $1,000.
+
+**Negation config** — mostly "get out of the way" for a case this simple: Standard FOCUS negation, same granularity as the source. This is what quietly creates the −\$1,000 entry against the gateway's central line so the bill still reconciles.
+
+**Add business context** — optional here, but you might stamp `x_CostCenter` or a tag onto the three new allocation rows so downstream reports can filter by cost center without another join.
+
+## Multi-level chains
+
+Because allocation rows can be re-allocated, a recipient can itself be a shared service that's allocated onward. Author one rule per level, ordered top-down; each hop records its rule and ratio in the allocation status columns, so the whole path stays traceable. See [multi-level allocations](/model/allocate#multi-level-allocations).
+
+## Result & gotchas
+
+- Every allocation **nets to zero** — nothing is invented or lost; cost is only moved.
+- A source row can't be allocated twice; allocation rows _can_ be re-allocated by a later rule.
+- Rules run in the **order you set them**, top-down within each level.
+- **Skip** on missing distribution data can silently no-op if the data never arrives.
+- **Grouping columns** drop every source column not listed (plus cost metrics).
+- **Replace** pairs rows by the negation match columns: unmatched source rows are dropped and unmatched replacement rows ignored, so verify the match keys.
+- The rule's **name and version** are stamped into the allocation status columns on source, negation, and allocation rows.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Allocate" icon="scale-balanced" href="/model/allocate">
+    The concepts — double-entry, multi-level chains, and traceability.
+  </Card>
+
+  <Card title="Generate artifacts" icon="layer-group" href="/build/generate-artifacts">
+    Build KPIs, chargebacks, and datasets on the allocated model.
+  </Card>
+</CardGroup>

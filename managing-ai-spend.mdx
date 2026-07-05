@@ -3,7 +3,7 @@ title: "Managing AI spend"
 description: "AI spend runs through the same pipeline as every other cost. StitcherAI enriches it from each provider's APIs — breaking out input, output, and cached tokens and surfacing rates and cost per component — then joins telemetry to add the feature, team, and customer definition that makes AI unit economics real."
 ---
 
-AI spend flows through the same pipeline as any other cost — connected, normalized to [FOCUS](/focus), attributed, allocated, and built into [artifacts](/generating-artifacts) like a cloud bill or a SaaS invoice. The **model**, **workspace**, and **API key** already arrive in the data. What's distinctive is reaching _what the spend was for_. StitcherAI closes that gap in two steps.
+AI spend flows through the same pipeline as any other cost — connected, normalized to [FOCUS](/focus), attributed, allocated, and built into [artifacts](/build/generate-artifacts) like a cloud bill or a SaaS invoice. The **model**, **workspace**, and **API key** already arrive in the data. What's distinctive is reaching _what the spend was for_. StitcherAI closes that gap in two steps.
 
 <Steps>
   <Step title="Enrich from provider APIs">
@@ -14,9 +14,7 @@ AI spend flows through the same pipeline as any other cost — connected, normal
   </Step>
 </Steps>
 
-<Frame caption="AI spend: provider-API enrichment, then telemetry for feature/team/customer definition">
-  ![AI spend: provider-API enrichment, then telemetry for feature/team/customer definition](/images/fig-14-ai-spend-enrichment.png)
-</Frame>
+> 🖼 **Figure:** AI spend: provider-API enrichment, then telemetry for feature/team/customer definition. _(image: ai-spend-enrichment)_
 
 ## Step 1 — enrich from provider APIs
 
@@ -52,7 +50,7 @@ With telemetry joined in, you can build artifacts that express AI as a business 
 
 | Measure | Build it as |
 | --- | --- |
-| Cost per inference | A KPI in [Generate](/generating-artifacts) |
+| Cost per inference | A KPI in [Generate](/build/generate-artifacts) |
 | Cost per feature | A cost-per-feature KPI |
 | Cost per tenant | A derived dataset |
 | Margin by feature | A derived dataset joining cost to revenue |
@@ -61,7 +59,7 @@ With telemetry joined in, you can build artifacts that express AI as a business 
   Provider data carries the **model, workspace, and API key**, and enrichment adds the **token, rate, and per-component detail** beneath them. Telemetry is how you reach **feature, team, and customer** — and true unit economics and margin.
 </Tip>
 
-Once these measures exist, you can govern them like any other KPI — for example, alerting when cost per tenant or margin by feature crosses a threshold. See [Cost governance](/cost-governance).
+Once these measures exist, you can govern them like any other KPI — for example, alerting when cost per tenant or margin by feature crosses a threshold. See [Govern](/build/govern).
 
 ## What the data can and can't carry
 
@@ -74,7 +72,11 @@ Once these measures exist, you can govern them like any other KPI — for exampl
     Guaranteed versus best-effort columns, and why StitcherAI never overstates the data.
   </Card>
 
-  <Card title="Attribution & allocation" icon="diagram-project" href="/attribution-and-allocation">
-    How enriched AI cost is attributed and allocated to the teams that drove it.
+  <Card title="Enrich" icon="user-tag" href="/model/enrich">
+    How enriched AI cost is attributed to the teams that drove it.
+  </Card>
+
+  <Card title="Allocate" icon="share-nodes" href="/model/allocate">
+    How the shared portion is distributed onward.
   </Card>
 </CardGroup>

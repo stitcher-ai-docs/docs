@@ -1,0 +1,22 @@
+---
+title: "Prepare"
+description: "Clean raw vendor data on its raw columns, before FOCUS exists — the first of Model's four sub-stages."
+---
+
+**Prepare** is the first of [Model](/model)'s four sub-stages — Prepare → Normalize → Enrich → Allocate.
+
+## Prepare — clean raw data before normalization
+
+Some vendor data needs fixing before it can be mapped into FOCUS — a malformed value, a field that needs splitting, rows that shouldn't be there. **Prepare** runs on the **raw columns, before FOCUS exists**, and uses the **same operator set as Enrich** (the [catalog on the Enrich page](/model/enrich)) — minus the two operators that depend on the FOCUS columns (**Simulate periodic cost** and **AI assisted mapping**), which run only in Enrich. Use it to drop, filter, rename, split, unpack, remap, or compute on raw columns — anything that has to happen before normalization.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Normalize" icon="table" href="/model/normalize">
+    Map every source into the FOCUS schema.
+  </Card>
+
+  <Card title="Shared building blocks" icon="cubes" href="/pipeline-overview#building-blocks-shared-across-stages">
+    Scope, conditions, and merge behavior — used by every operator in Prepare and Enrich alike.
+  </Card>
+</CardGroup>

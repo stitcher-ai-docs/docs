@@ -1,0 +1,60 @@
+---
+title: "How to: Attribute cost"
+description: "Assign cost to the owner responsible for it — including shared components — using Lookup and Mapping during Enrich."
+---
+
+## What this does, and why
+
+**Attribution** assigns cost to a clear owner — a team, product, or cost center — so every component, shared ones included, has a clear view of its own cost. It's distinct from **allocation**, which distributes what's left over once attribution has done what it can: the shared, central, and untagged cost no single owner can claim. Attribution narrows; allocation spreads what remains. See [Enrich](/model/enrich) for the full concepts.
+
+Attribution mostly happens during [**Enrich**](/model/enrich), the third Model sub-stage, once your data is already normalized to FOCUS. It uses two operators:
+
+<CardGroup cols={2}>
+  <Card title="Mapping" icon="list-check">
+    Derives an owner from rules on the values already present in the cost data — for example a naming pattern.
+  </Card>
+
+  <Card title="Lookup" icon="link">
+    Joins an ownership table onto each cost row by matching a key — the standard way to attach ownership from a business dataset.
+  </Card>
+</CardGroup>
+
+<Note>
+  This assumes you already have a connected, FOCUS-normalized dataset. If you haven't brought one in yet, see [How to: Bring in a dataset](/how-to/bring-in-a-dataset) first.
+</Note>
+
+## Choose Mapping or Lookup
+
+<Steps>
+  <Step title="Use Mapping when the owner is derivable from rules">
+    If ownership can be worked out from values already in the cost data — an account-name prefix, a tag pattern, a threshold — add a **Mapping**: an ordered set of conditions that derive or update a column, with a default value for rows that match none. Example: derive `x_team` or `x_cost_center` from an ordered set of naming-pattern rules.
+  </Step>
+  <Step title="Use Lookup when ownership lives in a separate dataset">
+    If ownership lives in a business dataset — an ownership spreadsheet, a headcount export — add a **Lookup**: it merges columns from that business dataset into the cost dataset by matching values in a join column, letting you rename imported columns and choose how duplicate matches are handled. Example: attribute resources to owners via a mapping table.
+  </Step>
+  <Step title="Combine them where needed">
+    Enrich runs its configurations in order, so a Lookup that attaches a raw owner id can feed a later Mapping that derives a friendlier team name from it — or the reverse. Order the configurations so each step has the columns it depends on. See [order is honored where it matters](/pipeline-overview#how-a-pipeline-is-composed).
+  </Step>
+</Steps>
+
+Both operators — like every Enrich operator — share the same building blocks: **scope** to limit which providers or sources a rule touches, **conditions** to test column values, and **merge behavior** (add, update-if-empty, or overwrite) to control how the result is written. See [the shared building blocks](/pipeline-overview#building-blocks-shared-across-stages).
+
+## What happens to what's left
+
+<Warning>
+  Unmatched rows are not dropped. A cost row that matches no Lookup key or no Mapping condition is treated as **shared or untagged cost** and handed to [Allocate](/how-to/build-an-allocation), which distributes it to the teams that consumed it.
+</Warning>
+
+This is the intended hand-off, not a failure state: attribution assigns what it can identify; allocation distributes what's left. Run attribution first so only the truly shared cost — a platform, a gateway, a central license — reaches allocation, rather than cost that could have been assigned directly to an owner.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="How to: Build an allocation" icon="share-nodes" href="/how-to/build-an-allocation">
+    Distribute the shared cost attribution couldn't assign to a single owner.
+  </Card>
+
+  <Card title="Allocate" icon="scale-balanced" href="/model/allocate">
+    The concepts — double-entry accounting, multi-level chains, and traceability.
+  </Card>
+</CardGroup>

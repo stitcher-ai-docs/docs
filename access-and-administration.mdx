@@ -21,19 +21,17 @@ StitcherAI is organized in three levels you work with directly:
   </Step>
 </Steps>
 
-<Frame caption="Organization → Environment → Pipeline">
-  ![Organization → Environment → Pipeline](/images/fig-04-org-environment-pipeline.png)
-</Frame>
+> 🖼 **Figure:** Organization → Environment → Pipeline. _(image: org-environment-pipeline)_
 
 ## Identity and access
 
 <CardGroup cols={2}>
-  <Card title="Single sign-on" icon="key">
-    Sign in through your identity provider (OpenID Connect). The same identity is used for the web app and the VS Code editor.
+  <Card title="Account & sign-in" icon="key">
+    StitcherAI provisions your account — an email and password. Organizations can optionally connect their own identity provider via SAML for single sign-on with a corporate identity. Either way, the same identity is used for the web app and the VS Code editor.
   </Card>
 
   <Card title="Environment-scoped roles" icon="user-lock">
-    Role-based access granted per environment, least-privilege by default. The full security model is in [Security, tenancy & AI guardrails](/security).
+    Role-based access granted per environment, least-privilege by default. (Full security model in [Security & AI guardrails](/security).)
   </Card>
 </CardGroup>
 
@@ -48,7 +46,7 @@ StitcherAI is organized in three levels you work with directly:
     Environments, data connections, runs, schedules, tags, and assistant sessions — at app.stitcher.ai.
   </Card>
 
-  <Card title="VS Code editor" icon="code" href="/how-to/set-up-authoring-environment">
+  <Card title="VS Code editor" icon="code">
     Build the model visually and through AI chat. Log in for the full experience.
   </Card>
 
