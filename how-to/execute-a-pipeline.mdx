@@ -1,0 +1,87 @@
+---
+title: "How to: Execute a pipeline"
+description: "Run your cost model as a standard, debug, or scheduled run, watch it live on the run details page, and fix a failure."
+---
+
+## What this does, and why
+
+Executing a pipeline runs your cost model through its stages — **Connect, Model, Build, Engage** — connecting to your sources, normalizing and attributing the data, building artifacts, evaluating governance, and delivering output. A **standard run** does this end to end, in full; **debug** and **scheduled** runs use the same stages with a narrower scope or a different cadence. See [Running & monitoring](/running-and-monitoring) for the full concept; this guide is the hands-on companion — running one, watching it, and fixing a failure.
+
+<Note>
+  This assumes your pipeline is already configured — Connect, Model, Build, and Engage (see [How a pipeline is composed](/pipeline-overview)). You'll also need access to trigger and watch runs in the web app (an environment-scoped role — see [Access & administration](/access-and-administration)).
+</Note>
+
+## Choose a run type
+
+### Standard run
+
+The full model: all stages, all configured sources, and whole-month periods (the current month can be month-to-date). Governance is evaluated, notifications fire, and output is written to every configured [destination](/engage). Use it to backfill or update data.
+
+<Warning>
+  A standard run updates the production data your organization relies on. Run it deliberately — for routine production, prefer a scheduled run instead.
+</Warning>
+
+### Debug run
+
+A scoped, low-cost run to validate a change **before it ships**, run against the [branch you're working on](/authoring-and-version-control). Narrow it three ways:
+
+<Steps>
+  <Step title="Narrow the period">
+    Scope the run to a single day, or a range of days, rather than the whole month — so the run is cheap and fast.
+  </Step>
+  <Step title="Narrow the data scope">
+    Run one provider, or a single data source within a provider. Business data still processes, because downstream steps depend on it.
+  </Step>
+  <Step title="Run only the stages you're changing">
+    Stop at a chosen stage, or resume from a recent debug session so you skip the stages you've already run. Start _at_ the stage you're editing so your change actually executes.
+  </Step>
+</Steps>
+
+A debug run writes to a **debug destination** rather than production, and **notifications are suppressed** — so you can iterate freely without touching live data or alerting anyone. Debug runs can be named, but can't be scheduled.
+
+### Scheduled run
+
+A standard run on a schedule you define, left to run unattended — this is normal production operation. It runs the full scope at each interval and takes no extra inputs; a scheduled run can't be named or put into debug mode, because the point is that it runs the same full model every time without anyone starting it.
+
+## Watch the run
+
+Open the run on the **run details page** to watch it live. It shows **per-stage and per-step progress** — which stage is running, which steps have completed, and which is in flight.
+
+<Note>
+  A pipeline runs **one run at a time**. Runs can be **named** — so a backfill is easy to find later — and **cancelled** from the run details page if you need to stop one.
+</Note>
+
+## Diagnose and fix a failure
+
+When a step fails, the run details page is also where you fix it.
+
+<Steps>
+  <Step title="Open the failed step">
+    The failed step is marked, with its **error and logs** shown directly. Read the reason there — you don't go hunting for it.
+  </Step>
+  <Step title="Fix the configuration">
+    Make the change in the [VS Code editor](/authoring-and-version-control) on your working branch.
+  </Step>
+  <Step title="Re-run a scoped debug run">
+    Re-run on just the relevant scope — the narrowed period, the one source, the stages you changed — to confirm the fix cheaply.
+  </Step>
+  <Step title="Promote when it's clean">
+    Once the debug run passes, merge your change and let a standard run (or the schedule) update production.
+  </Step>
+</Steps>
+
+<Tip>
+  A recent debug session keeps the work already done, so a follow-up debug run can **start from a stage you've already passed** instead of re-running everything. Iterate on the stage you're actually changing.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Running & monitoring" icon="play" href="/running-and-monitoring">
+    The full concept — run types, the run details page, and diagnosing failures.
+  </Card>
+
+  <Card title="Authoring & version control" icon="code-branch" href="/authoring-and-version-control">
+    The branch a debug run targets, and the author → debug → review loop.
+  </Card>
+</CardGroup>

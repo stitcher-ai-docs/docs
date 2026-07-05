@@ -25,7 +25,8 @@
           "quickstart",
           "how-to/bring-in-a-dataset",
           "how-to/attribute-cost",
-          "how-to/build-an-allocation"
+          "how-to/build-an-allocation",
+          "how-to/execute-a-pipeline"
         ]
       },
       {

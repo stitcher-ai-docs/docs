@@ -15,8 +15,8 @@ Before you can do anything else in StitcherAI, you need access to two surfaces: 
 The web app at [**app.stitcher.ai**](https://app.stitcher.ai) is where you manage environments, data connections, runs, schedules, tags, and assistant sessions.
 
 <Steps>
-  <Step title="Sign in with your identity provider">
-    StitcherAI will create account credentials with your organization email and provide you a password uses **single sign-on (OpenID Connect)** — there's no separate StitcherAI password to create. Sign in with the same corporate identity your organization already uses.
+  <Step title="Sign in">
+    StitcherAI provisions your account — an email and password. Organizations can optionally connect their own identity provider via SAML for single sign-on with a corporate identity. Either way, the same identity is used for the web app and the VS Code editor.
   </Step>
   <Step title="Confirm your environment">
     Once signed in, you land in the [environment](/access-and-administration) your role grants you access to. If you work across more than one environment, you can switch between the ones you have access to from within the app.
@@ -24,7 +24,7 @@ The web app at [**app.stitcher.ai**](https://app.stitcher.ai) is where you manag
 </Steps>
 
 <Note>
-  This is the **same identity** you'll use to log in to the authoring environment below — signing in once with your provider is what unlocks both surfaces.
+  This is the **same identity** you'll use to log in to the authoring environment below.
 </Note>
 
 ## Set up the authoring environment
