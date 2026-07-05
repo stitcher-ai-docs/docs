@@ -1,0 +1,86 @@
+---
+title: "How to: Generate an artifact"
+description: "Build a Time series indicator (KPI) in the editor — general configuration, source data, time settings, the calculation, and an optional budget link."
+---
+
+## What this does, and why
+
+[Generate](/build/generate-artifacts) builds specialized outputs — artifacts — on top of your modeled cost data. This guide walks through building one: a **Time series indicator**, the artifact type behind every KPI.
+
+<Note>
+  This assumes a modeled cost dataset already exists — normalized, attributed, and allocated (see [Model](/model)). Derived datasets and commitment-coverage reports use the same artifact-type picker but their own field sets, not covered here.
+</Note>
+
+## Choose the artifact type
+
+In the editor, add a new artifact under **Generate** and choose an **Artifact type**:
+
+<CardGroup cols={3}>
+  <Card title="Time series indicator" icon="chart-line">
+    A single cost metric tracked over time — this guide's walkthrough.
+  </Card>
+
+  <Card title="Derived dataset" icon="table">
+    A custom view built with a SQL expression.
+  </Card>
+
+  <Card title="Commitment coverage report" icon="file-contract">
+    Reserved-instance / savings-plan coverage and utilization.
+  </Card>
+</CardGroup>
+
+## Build a Time series indicator
+
+The editor walks five steps: **General configuration → Select the source data → Time settings → How to calculate the indicator → Link a budget**.
+
+<Steps>
+  <Step title="General configuration">
+    Set the **Indicator name** (required) and, optionally, an **Artifact group** — the handle used to select this artifact later, when chaining, governing, or delivering it. Optionally add **preconditions** — cheap checks (for example _Provider has data_ or _Data connection has data_, each with a name and provider) that must pass before the indicator runs.
+  </Step>
+  <Step title="Select the source data">
+    Optionally add **cost selection filters** to ring-fence the rows this indicator aggregates — a **simple condition** (column, operator, value) or a **SQL condition**.
+  </Step>
+  <Step title="Time settings">
+    Set the **date range** — all available past data, a specific range, or a rolling same-month, same-quarter, or same-year window — and, optionally, **enable forecast** (see [Events](/build/events)). Set the **granularity** the indicator is aggregated at: daily, weekly, monthly, quarterly, or yearly.
+  </Step>
+  <Step title="How to calculate the indicator">
+    Enter the **source metric column name** — the column to aggregate — and pick a **calculation operation**: Sum, Average, Max, Min, Variance, Median, Percentage of total, p50, p75, p90, Count, or Distinct count. Optionally **rename** the resulting column, and add **grouping columns** to compute the indicator per group (for example, per team) instead of one overall number.
+  </Step>
+  <Step title="Link a budget (optional)">
+    Turn on **Enable budget** to combine the indicator with budget figures, so you can track budget versus actual and the variance between them.
+  </Step>
+</Steps>
+
+## Worked example — effective cost by team, per month
+
+<Steps>
+  <Step title="General configuration">
+    Indicator name `effective_cost_by_team`. No artifact group needed for a first pass.
+  </Step>
+  <Step title="Select the source data">
+    No filter — aggregate the whole cost dataset.
+  </Step>
+  <Step title="Time settings">
+    Date range: all available past data. Granularity: Monthly.
+  </Step>
+  <Step title="How to calculate the indicator">
+    Source metric column name `EffectiveCost`. Calculation operation: **Sum**. Grouping columns: the team column — one summary row per team, per month, instead of one number for the whole organization.
+  </Step>
+  <Step title="Link a budget">
+    Left off for a first pass — turn it on later to track budget versus actual.
+  </Step>
+</Steps>
+
+The result is exactly the Indicator described in [Generate artifacts](/build/generate-artifacts): a single cost metric, tracked over time, at a granularity and grouping you choose.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Govern" icon="shield-check" href="/build/govern">
+    Evaluate this indicator against a threshold, and route breaches to an alert.
+  </Card>
+
+  <Card title="Generate artifacts" icon="cubes" href="/build/generate-artifacts">
+    The full artifact catalog, chaining, and where delivery happens.
+  </Card>
+</CardGroup>
